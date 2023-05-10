@@ -1,7 +1,9 @@
 /**************************************************************
  * @file queue.hpp
- * @brief A lock free queue implementation written in standard
- * c++11.
+ * @brief A queue implementation written in standard c++11
+ * suitable for both low-end microcontrollers all the way
+ * to HPC machines. Lock-free for single consumer single
+ * producer scenarios.
  * @version	1.0.0
  * @date 9. May 2023
  * @author Djordje Nedic
