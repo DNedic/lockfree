@@ -3,8 +3,6 @@
 ## When to use the Queue
 Queue is the simplest data structure in the library, and it should be used when single element operations are dominant. It has the simplest API and lowest overhead per operation.
 
-Additionally, the Queue uses the copy constructor unlike Ring Buffer and Bipartite Buffer, which are only meant for PODs.
-
 ## How to use
 Shown here is an example of typical use:
 * Initialization

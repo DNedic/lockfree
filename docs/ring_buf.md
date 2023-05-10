@@ -5,6 +5,8 @@
 * For byte streams where variably sized packets need to be enqueued but sent `n` bytes at a time
 * When operations on data can fail or only some of the data is used
 
+> Note: At the moment, the Ring Buffer is only meant for PODs, as it copies the data instead of copy constructing the type.
+
 ## How to use
 There are three API types that can be used:
 * A raw pointer and element count API
