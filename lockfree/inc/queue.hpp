@@ -58,11 +58,28 @@ template <typename T, size_t size> class Queue {
   public:
     Queue();
 
+    /**
+     * @brief Adds an element into the queue.
+     * Should only be called from the producer thread.
+     * @param[in] element
+     * @retval Operation success
+     */
     bool Push(const T &element);
 
+    /**
+     * @brief Removes an element from the queue.
+     * Should only be called from the consumer thread.
+     * @param[in] element
+     * @retval Operation success
+     */
     bool Pop(T &element);
 
 #if __cplusplus >= 201703L
+    /**
+     * @brief Removes an element from the queue.
+     * Should only be called from the consumer thread.
+     * @retval Either the element or nothing
+     */
     std::optional<T> PopOptional();
 #endif
 

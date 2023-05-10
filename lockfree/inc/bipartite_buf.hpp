@@ -62,6 +62,7 @@ template <typename T, size_t size> class BipartiteBuf {
 
     /**
      * @brief Acquires a linear region in the bipartite buffer for writing
+     * Should only be called from the producer thread.
      * @param[in] Free linear space in the buffer required
      * @retval Pointer to the beginning of the linear space
      */
@@ -70,6 +71,7 @@ template <typename T, size_t size> class BipartiteBuf {
 #if __cplusplus >= 202002L
     /**
      * @brief Acquires a linear region in the bipartite buffer for writing
+     * Should only be called from the producer thread.
      * @param[in] Free linear space in the buffer required
      * @retval Span of the linear space
      */
@@ -78,6 +80,7 @@ template <typename T, size_t size> class BipartiteBuf {
 
     /**
      * @brief Releases the bipartite buffer after a write
+     * Should only be called from the producer thread.
      * @param[in] Elements written to the linear space
      * @retval None
      */
@@ -86,6 +89,7 @@ template <typename T, size_t size> class BipartiteBuf {
 #if __cplusplus >= 202002L
     /**
      * @brief Releases the bipartite buffer after a write
+     * Should only be called from the producer thread.
      * @param[in] Span of the linear space
      * @retval None
      */
@@ -93,7 +97,8 @@ template <typename T, size_t size> class BipartiteBuf {
 #endif
 
     /**
-     * @brief Acquires a linear region in the bipartite buffer for reading
+     * @brief Acquires a linear region in the bipartite buffer for reading\
+     * Should only be called from the consumer thread.
      * @retval Pair containing the pointer to the beginning of the area and
      * elements available
      */
@@ -102,6 +107,7 @@ template <typename T, size_t size> class BipartiteBuf {
 #if __cplusplus >= 202002L
     /**
      * @brief Acquires a linear region in the bipartite buffer for reading
+     * Should only be called from the consumer thread.
      * @retval Span of the linear space
      */
     std::span<T> ReadAcquireSpan();
@@ -109,6 +115,7 @@ template <typename T, size_t size> class BipartiteBuf {
 
     /**
      * @brief Releases the bipartite buffer after a read
+     * Should only be called from the consumer thread.
      * @param[in] Elements read from the linear region
      * @retval None
      */
@@ -117,6 +124,7 @@ template <typename T, size_t size> class BipartiteBuf {
 #if __cplusplus >= 202002L
     /**
      * @brief Releases the bipartite buffer after a read
+     * Should only be called from the consumer thread.
      * @param[in] Span of the linear space
      * @retval None
      */
