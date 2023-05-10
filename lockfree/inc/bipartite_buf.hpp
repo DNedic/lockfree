@@ -97,7 +97,7 @@ template <typename T, size_t size> class BipartiteBuf {
 #endif
 
     /**
-     * @brief Acquires a linear region in the bipartite buffer for reading\
+     * @brief Acquires a linear region in the bipartite buffer for reading.
      * Should only be called from the consumer thread.
      * @retval Pair containing the pointer to the beginning of the area and
      * elements available
