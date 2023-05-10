@@ -1,7 +1,7 @@
 # lockfree
 ![CMake](https://github.com/DNedic/lockfree/actions/workflows/.github/workflows/cmake.yml/badge.svg)
 
-`lockfree` is a collection of lock-free data structures written in standard C++11 and suitable for all platforms - from deeply embedded to HPC. 
+`lockfree` is a collection of lock-free single-producer/single-consumer data structures written in standard C++11 and suitable for all platforms - from deeply embedded to HPC.
 
 ## What are lock-free data structures?
 
