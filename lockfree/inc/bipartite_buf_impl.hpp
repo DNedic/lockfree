@@ -5,7 +5,7 @@
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
  * @version	1.2.0
- * @date 9. May 2023
+ * @date 11. May 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,7 +37,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v1.0.0
+ * Version:         v1.0.1
  **************************************************************/
 
 /************************** INCLUDE ***************************/
