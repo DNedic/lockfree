@@ -21,8 +21,6 @@ At the moment the following data structures are available:
 * [Ring Buffer](docs/ring_buf.md) - A more general data structure with the ability to handle multiple elements at a time, uses standard library copies making it very fast for bulk operations.
 * [Bipartite Buffer](docs/bipartite_buf.md) - A variation of the ring buffer with the ability to always provide linear space in the buffer, enables in-buffer processing.
 
-All of these are available as separate libraries and ring buffer and bipartite buffer also have C library variants.
-
 ## How to get
 There are three main ways to get the library:
 * Using CMake [FetchContent()](https://cmake.org/cmake/help/latest/module/FetchContent.html)
