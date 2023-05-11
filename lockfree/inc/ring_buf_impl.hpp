@@ -84,8 +84,8 @@ bool RingBuf<T, size>::Write(const T *data, const size_t cnt) {
 template <typename T, size_t size>
 bool RingBuf<T, size>::Read(T *data, const size_t cnt) {
     /* Preload variables with adequate memory ordering */
-    const size_t w = _w.load(std::memory_order_acquire);
     size_t r = _r.load(std::memory_order_relaxed);
+    const size_t w = _w.load(std::memory_order_acquire);
 
     if (CalcAvailable(w, r) < cnt) {
         return false;
@@ -120,8 +120,8 @@ bool RingBuf<T, size>::Read(T *data, const size_t cnt) {
 template <typename T, size_t size>
 bool RingBuf<T, size>::Peek(T *data, const size_t cnt) const {
     /* Preload variables with adequate memory ordering */
-    const size_t w = _w.load(std::memory_order_acquire);
     const size_t r = _r.load(std::memory_order_relaxed);
+    const size_t w = _w.load(std::memory_order_acquire);
 
     if (CalcAvailable(w, r) < cnt) {
         return false;
@@ -146,8 +146,8 @@ bool RingBuf<T, size>::Peek(T *data, const size_t cnt) const {
 template <typename T, size_t size>
 bool RingBuf<T, size>::Skip(const size_t cnt) {
     /* Preload variables with adequate memory ordering */
-    const size_t w = _w.load(std::memory_order_acquire);
     size_t r = _r.load(std::memory_order_relaxed);
+    const size_t w = _w.load(std::memory_order_acquire);
 
     if (CalcAvailable(w, r) < cnt) {
         return false;
@@ -174,8 +174,8 @@ template <typename T, size_t size> size_t RingBuf<T, size>::GetFree() const {
 
 template <typename T, size_t size>
 size_t RingBuf<T, size>::GetAvailable() const {
-    const size_t w = _w.load(std::memory_order_acquire);
     const size_t r = _r.load(std::memory_order_relaxed);
+    const size_t w = _w.load(std::memory_order_acquire);    
 
     return CalcAvailable(w, r);
 }

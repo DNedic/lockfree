@@ -111,9 +111,9 @@ void BipartiteBuf<T, size>::WriteRelease(const size_t written) {
 template <typename T, size_t size>
 std::pair<T *, size_t> BipartiteBuf<T, size>::ReadAcquire() {
     /* Preload variables with adequate memory ordering */
+    const size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);
     const size_t i = _i.load(std::memory_order_acquire);
-    const size_t r = _r.load(std::memory_order_relaxed);
 
     /* When read and write indexes are equal, the buffer is empty */
     if (r == w) {

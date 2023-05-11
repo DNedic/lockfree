@@ -75,8 +75,8 @@ bool Queue<T, size>::Push(const T &element) {
 
 template <typename T, size_t size> bool Queue<T, size>::Pop(T &element) {
     /* Preload indexes with adequate memory ordering */
-    const size_t w = _w.load(std::memory_order_acquire);
     size_t r = _r.load(std::memory_order_relaxed);
+    const size_t w = _w.load(std::memory_order_acquire);
 
     /* Empty check */
     if (r == w) {
