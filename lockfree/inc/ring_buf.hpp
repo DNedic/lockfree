@@ -47,6 +47,7 @@
 #include <array>
 #include <atomic>
 #include <cstddef>
+#include <type_traits>
 
 #if __cplusplus >= 202002L
 #include <span>
@@ -57,6 +58,9 @@ namespace lockfree {
 /*************************** TYPES ****************************/
 
 template <typename T, size_t size> class RingBuf {
+    static_assert(std::is_trivial<T>::value, "The type T must be trivial");
+    static_assert(size > 2, "Buffer size must be bigger than 2");
+
     /********************** PUBLIC METHODS ************************/
   public:
     RingBuf();

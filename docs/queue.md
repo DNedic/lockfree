@@ -3,6 +3,8 @@
 ## When to use the Queue
 Queue is the simplest data structure in the library, and it should be used when single element operations are dominant. It has the simplest API and lowest overhead per operation.
 
+> Note: At the moment, the Queue is only meant to be used for trivial types.
+
 ## How to use
 Shown here is an example of typical use:
 * Initialization
