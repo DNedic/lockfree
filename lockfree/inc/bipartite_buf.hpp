@@ -133,7 +133,7 @@ template <typename T, size_t size> class BipartiteBuf {
 
     /********************* PRIVATE METHODS ************************/
   private:
-    static size_t GetFree(const size_t w, const size_t r);
+    static size_t CalcFree(const size_t w, const size_t r);
 
     /********************** PRIVATE MEMBERS ***********************/
     T _data[size]; /**< Data array */
