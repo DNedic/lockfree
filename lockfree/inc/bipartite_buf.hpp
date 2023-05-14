@@ -140,10 +140,12 @@ template <typename T, size_t size> class BipartiteBuf {
     static size_t CalcFree(const size_t w, const size_t r);
 
     /********************** PRIVATE MEMBERS ***********************/
+  private:
     T _data[size]; /**< Data array */
 #if LOCKFREE_CACHE_COHERENT
     alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _r; /**< Read index */
-    alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _w; /**< Write index */
+    alignas(
+        LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _w; /**< Write index */
     alignas(LOCKFREE_CACHELINE_LENGTH)
         std::atomic_size_t _i; /**< Invalidated space index */
 #else
