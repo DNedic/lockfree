@@ -4,8 +4,8 @@
  * c++11 suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
- * @version	1.0.1
- * @date 11. May 2023
+ * @version	1.0.2
+ * @date 18. May 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,7 +37,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v1.0.1
+ * Version:         v1.0.2
  **************************************************************/
 
 /********************** PUBLIC METHODS ************************/
@@ -175,7 +175,7 @@ template <typename T, size_t size> size_t RingBuf<T, size>::GetFree() const {
 template <typename T, size_t size>
 size_t RingBuf<T, size>::GetAvailable() const {
     const size_t r = _r.load(std::memory_order_relaxed);
-    const size_t w = _w.load(std::memory_order_acquire);    
+    const size_t w = _w.load(std::memory_order_acquire);
 
     return CalcAvailable(w, r);
 }

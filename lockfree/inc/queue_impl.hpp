@@ -4,8 +4,8 @@
  * suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
- * @version	1.0.1
- * @date 11. May 2023
+ * @version	1.0.2
+ * @date 18. May 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,16 +37,14 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v1.0.1
+ * Version:         v1.0.2
  **************************************************************/
 
 /********************** PUBLIC METHODS ************************/
 
-template <typename T, size_t size>
-Queue<T, size>::Queue() : _r(0U), _w(0U) {}
+template <typename T, size_t size> Queue<T, size>::Queue() : _r(0U), _w(0U) {}
 
-template <typename T, size_t size>
-bool Queue<T, size>::Push(const T &element) {
+template <typename T, size_t size> bool Queue<T, size>::Push(const T &element) {
     /* Preload indexes with adequate memory ordering */
     const size_t w = _w.load(std::memory_order_relaxed);
     const size_t r = _r.load(std::memory_order_acquire);
