@@ -3,8 +3,8 @@
  * @brief A collection of lock free data structures written in
  * standard c++11 suitable for all systems, from low-end
  * microcontrollers to HPC machines.
- * @version	1.0.2
- * @date 18. May 2023
+ * @version	1.1.0
+ * @date 19. May 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -36,7 +36,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v1.0.2
+ * Version:         v1.1.0
  **************************************************************/
 
 /************************** DEFINE ****************************/

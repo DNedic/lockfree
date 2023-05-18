@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0
+- Added the [Priority Queue](docs/priority_queue.md) data structure
+
 ## 1.0.2
 - Made all class members accidentally public private
 - Small doc fixes
