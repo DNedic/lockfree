@@ -75,7 +75,7 @@ template <typename T, size_t size> class Queue {
     /**
      * @brief Removes an element from the queue.
      * Should only be called from the consumer thread.
-     * @param[in] element
+     * @param[out] element
      * @retval Operation success
      */
     bool Pop(T &element);
