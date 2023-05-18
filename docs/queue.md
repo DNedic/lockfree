@@ -32,7 +32,7 @@ if (read_success) {
 
 There is also a `std::optional` API for the `Pop` method:
 ```c
-auto read = queue_adc.Pop(read);
+auto read = queue_adc.PopOptional(read);
 
 if (read) {
     DoStuffWithData(read);
