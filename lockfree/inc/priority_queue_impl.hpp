@@ -1,8 +1,9 @@
 /**************************************************************
- * @file lockfree.hpp
- * @brief A collection of lock free data structures written in
- * standard c++11 suitable for all systems, from low-end
- * microcontrollers to HPC machines.
+ * @file priority_queue_impl.hpp
+ * @brief A priority queue implementation written in standard
+ * c++11 suitable for both low-end microcontrollers all the way
+ * to HPC machines. Lock-free for single consumer single
+ * producer scenarios.
  * @version	1.0.2
  * @date 18. May 2023
  * @author Djordje Nedic
@@ -39,19 +40,44 @@
  * Version:         v1.0.2
  **************************************************************/
 
-/************************** DEFINE ****************************/
-
-#ifndef LOCKFREE_CACHE_COHERENT
-#define LOCKFREE_CACHE_COHERENT false
-#endif
-
-#ifndef LOCKFREE_CACHELINE_LENGTH
-#define LOCKFREE_CACHELINE_LENGTH 64U
-#endif
-
 /************************** INCLUDE ***************************/
 
-#include "bipartite_buf.hpp"
-#include "priority_queue.hpp"
-#include "queue.hpp"
-#include "ring_buf.hpp"
+#include <cassert>
+
+/********************** PUBLIC METHODS ************************/
+
+template <typename T, size_t size, size_t priority_count>
+bool PriorityQueue<T, size, priority_count>::Push(const T &element,
+                                                  const size_t priority) {
+    assert(priority < priority_count);
+
+    return _subqueue[priority].Push(element);
+}
+
+template <typename T, size_t size, size_t priority_count>
+bool PriorityQueue<T, size, priority_count>::Pop(T &element) {
+
+    for (size_t priority = priority_count; priority-- > 0;) {
+        if (_subqueue[priority].Pop(element)) {
+            return true;
+        }
+    }
+
+    /* Could find no elements at all */
+    return false;
+}
+
+/********************* std::optional API **********************/
+#if __cplusplus >= 201703L
+template <typename T, size_t size, size_t priority_count>
+std::optional<T> PriorityQueue<T, size, priority_count>::PopOptional() {
+    T element;
+    bool result = Pop(element);
+
+    if (result) {
+        return element;
+    } else {
+        return {};
+    }
+}
+#endif
