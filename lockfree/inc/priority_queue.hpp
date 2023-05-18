@@ -79,7 +79,7 @@ template <typename T, size_t size, size_t priority_count> class PriorityQueue {
      * @param[out] Element
      * @retval Operation success
      */
-    bool PopHighest(T &element);
+    bool Pop(T &element);
 
 #if __cplusplus >= 201703L
     /**
@@ -87,24 +87,7 @@ template <typename T, size_t size, size_t priority_count> class PriorityQueue {
      * Should only be called from the consumer thread.
      * @retval Either the element or nothing if the queue is empty.
      */
-    std::optional<T> PopHighestOptional();
-#endif
-
-    /**
-     * @brief Removes an element with the lowest priority from the queue.
-     * Should only be called from the consumer thread.
-     * @param[out] Element
-     * @retval Operation success
-     */
-    bool PopLowest(T &element);
-
-#if __cplusplus >= 201703L
-    /**
-     * @brief Removes an element with the lowest priority from the queue.
-     * Should only be called from the consumer thread.
-     * @retval Either the element or nothing if the queue is empty.
-     */
-    std::optional<T> PopLowestOptional();
+    std::optional<T> PopOptional();
 #endif
 
     /********************** PRIVATE MEMBERS ***********************/

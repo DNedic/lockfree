@@ -55,22 +55,9 @@ bool PriorityQueue<T, size, priority_count>::Push(const T &element,
 }
 
 template <typename T, size_t size, size_t priority_count>
-bool PriorityQueue<T, size, priority_count>::PopHighest(T &element) {
+bool PriorityQueue<T, size, priority_count>::Pop(T &element) {
 
     for (size_t priority = priority_count; priority-- > 0;) {
-        if (_subqueue[priority].Pop(element)) {
-            return true;
-        }
-    }
-
-    /* Could find no elements at all */
-    return false;
-}
-
-template <typename T, size_t size, size_t priority_count>
-bool PriorityQueue<T, size, priority_count>::PopLowest(T &element) {
-
-    for (size_t priority = 0; priority < priority_count; priority++) {
         if (_subqueue[priority].Pop(element)) {
             return true;
         }
@@ -83,21 +70,9 @@ bool PriorityQueue<T, size, priority_count>::PopLowest(T &element) {
 /********************* std::optional API **********************/
 #if __cplusplus >= 201703L
 template <typename T, size_t size, size_t priority_count>
-std::optional<T> PriorityQueue<T, size, priority_count>::PopHighestOptional() {
+std::optional<T> PriorityQueue<T, size, priority_count>::PopOptional() {
     T element;
-    bool result = PopHighest(element);
-
-    if (result) {
-        return element;
-    } else {
-        return {};
-    }
-}
-
-template <typename T, size_t size, size_t priority_count>
-std::optional<T> PriorityQueue<T, size, priority_count>::PopLowestOptional() {
-    T element;
-    bool result = PopLowest(element);
+    bool result = Pop(element);
 
     if (result) {
         return element;

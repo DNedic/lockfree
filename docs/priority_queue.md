@@ -24,15 +24,15 @@ while(!queue_events.Push(event, priority)) {}
 * Consumer thread/interrupt
 ```cpp
 Event event_in;
-bool read_success = queue_events.PopHighest(read);
+bool read_success = queue_events.Pop(read);
 if (read_success) {
     actor2.ProcessEvent(event_in);
 }
 ```
 
-There is also a `std::optional` API for the `PopHighest` and `PopLowest` methods:
+There is also a `std::optional` API for `Pop`:
 ```c
-auto read = queue_events.PopHighestOptional();
+auto read = queue_events.PopOptional();
 
 if (read) {
     actor2.ProcessEvent(read);
@@ -41,6 +41,6 @@ if (read) {
 
 ## Performance and memory use
 
-This implementation has `O(1)` time complexity for `Push` and `O(current_max_priority)` or `O(current_min_priority)` for `Pop` variants making it extremely fast. 
+This implementation has `O(1)` time complexity for `Push` and `O(current_max_priority)` for `Pop` making it extremely fast.
 
 On the other hand the memory usage is a function of `size * priority_count`, so adequately chosing the number of priorities is necessary.
