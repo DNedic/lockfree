@@ -55,4 +55,4 @@ While locking usually isn't expensive on embedded systems such as microcontrolle
 * Encapsulation, the data buffer is a class member instead of being passed by a pointer
 
 ### Give me more theory
-All structures in `lockfree` are **bounded**, **array-based**, **lockfree** and **waitfree** for single consumer single producer scenarios. For more insight into lock-free programming, take a look at this [brilliant talk series](https://youtu.be/c1gO9aB9nbs) from Herb Sutter.
+All structures in `lockfree` are **bounded**, **array-based**, **lockfree**, **waitfree** and **termination safe** for single consumer single producer scenarios. For more insight into lock-free programming, take a look at this [brilliant talk series](https://youtu.be/c1gO9aB9nbs) from Herb Sutter.
