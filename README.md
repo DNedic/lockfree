@@ -56,7 +56,7 @@ While locking usually isn't expensive on embedded systems such as microcontrolle
 
 `lockfree` provides a way to build portable embedded code with a neglegible performance cost as opposed to locking, code using `lockfree` can be compiled to run on any embedded platform supporting C++11. Additionally, the code can easily be tested on a host machine without the need for mocking.
 
-### What advantages does the C++ version of the library bring?
+### What advantages does using C++ over C provide for the library?
 * Type safety, as data structures are type and size templated
 * Much simpler and less error-prone instantiation
 * Higher performance due to compile-time known size and header-only implementation
