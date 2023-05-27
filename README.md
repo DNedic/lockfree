@@ -28,7 +28,7 @@ These data structures are more performant and should generally be used whenever 
 * [Queue](docs/mpmc/queue.md) - Best for single element operations, extremely fast, simple API consisting of only 2 methods.
 * [Priority Queue](docs/spsc/priority_queue.md) - A Variation of the queue with the ability to provide different priorities for elements, very useful for things like signals, events and communication packets.
 
-These data structures are more general, supporting multiple producers and consumers at the same time, however they have storage and performance overhead compared to single producer single consumer data structures.
+These data structures are more general, supporting multiple producers and consumers at the same time, however they have storage and performance overhead compared to single producer single consumer data structures. They also require atomic instructions which can be missing from some low-end microcontrollers.
 
 ## How to get
 There are three main ways to get the library:
