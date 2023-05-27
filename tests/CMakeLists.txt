@@ -14,10 +14,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 add_executable(tests
-    queue.cpp
+    spsc_queue.cpp
     ring_buf.cpp
     bipartite_buf.cpp
     priority_queue.cpp
+    mpmc_queue.cpp
 )
 
 # Required in order to test the std::span API as well

@@ -25,7 +25,7 @@ Lock-free data structures are data structures that are thread and interrupt safe
 These data structures are more performant and should generally be used whenever there is only one thread/interrupt pushing data and another one retrieving it.
 
 ### Multi-producer multi-consumer data structures
-There are no multi producer multi consumer data structures implemented currently.
+* [Queue](docs/mpmc/queue.md) - Best for single element operations, extremely fast, simple API consisting of only 2 methods.
 
 These data structures are more general, supporting multiple producers and consumers at the same time, however they have storage and performance overhead compared to single producer single consumer data structures.
 

@@ -55,3 +55,5 @@
 #include "spsc/priority_queue.hpp"
 #include "spsc/queue.hpp"
 #include "spsc/ring_buf.hpp"
+
+#include "mpmc/queue.hpp"
