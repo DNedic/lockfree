@@ -53,7 +53,7 @@
 #endif
 
 namespace lockfree {
-
+namespace spsc {
 /*************************** TYPES ****************************/
 
 template <typename T, size_t size> class BipartiteBuf {
@@ -162,6 +162,7 @@ template <typename T, size_t size> class BipartiteBuf {
 /* Include the implementation */
 #include "bipartite_buf_impl.hpp"
 
+} /* namespace spsc */
 } /* namespace lockfree */
 
 #endif /* LOCKFREE_BIPARTITE_BUF_HPP */

@@ -6,7 +6,7 @@
 #include "lockfree.hpp"
 
 TEST_CASE("Write to empty and read back", "[q_write_empty]") {
-    lockfree::Queue<int16_t, 20> queue;
+    lockfree::spsc::Queue<int16_t, 20> queue;
 
     bool const push_success = queue.Push(-1024);
     REQUIRE(push_success);
@@ -18,7 +18,7 @@ TEST_CASE("Write to empty and read back", "[q_write_empty]") {
 }
 
 TEST_CASE("Read empty", "[q_read_empty]") {
-    lockfree::Queue<uint8_t, 20> queue;
+    lockfree::spsc::Queue<uint8_t, 20> queue;
 
     uint8_t read = 0;
     bool const pop_success = queue.Pop(read);
@@ -26,7 +26,7 @@ TEST_CASE("Read empty", "[q_read_empty]") {
 }
 
 TEST_CASE("Write full", "[q_write_full]") {
-    lockfree::Queue<uint8_t, 5> queue;
+    lockfree::spsc::Queue<uint8_t, 5> queue;
 
     bool push_success = queue.Push(1U);
     push_success = queue.Push(1U);
@@ -37,7 +37,7 @@ TEST_CASE("Write full", "[q_write_full]") {
 }
 
 TEST_CASE("Write multiple to empty and read back", "[q_write_empty_multiple]") {
-    lockfree::Queue<float, 20> queue;
+    lockfree::spsc::Queue<float, 20> queue;
 
     bool push_success = queue.Push(2.7183F);
     REQUIRE(push_success);
@@ -59,7 +59,7 @@ TEST_CASE("Write multiple to empty and read back", "[q_write_empty_multiple]") {
 
 TEST_CASE("Write with overflow and read back from start",
           "[q_write_overflow]") {
-    lockfree::Queue<int32_t, 4> queue;
+    lockfree::spsc::Queue<int32_t, 4> queue;
 
     bool push_success = queue.Push(-1024);
     push_success = queue.Push(111);
@@ -80,7 +80,7 @@ TEST_CASE("Write with overflow and read back from start",
 }
 
 TEST_CASE("Optional API", "[q_optional_api]") {
-    lockfree::Queue<uint64_t, 20> queue;
+    lockfree::spsc::Queue<uint64_t, 20> queue;
 
     REQUIRE(!queue.PopOptional());
     queue.Push(-1024);

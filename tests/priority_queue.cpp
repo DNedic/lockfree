@@ -7,7 +7,7 @@
 
 TEST_CASE("Write to empty, lowest priority and read back",
           "[pq_write_empty_lowest]") {
-    lockfree::PriorityQueue<int16_t, 20, 3> queue;
+    lockfree::spsc::PriorityQueue<int16_t, 20, 3> queue;
 
     bool const push_success = queue.Push(-1024, 0);
     REQUIRE(push_success);
@@ -20,7 +20,7 @@ TEST_CASE("Write to empty, lowest priority and read back",
 
 TEST_CASE("Write to empty, highest priority and read back",
           "[pq_write_empty_highest]") {
-    lockfree::PriorityQueue<int16_t, 20, 3> queue;
+    lockfree::spsc::PriorityQueue<int16_t, 20, 3> queue;
 
     bool const push_success = queue.Push(-1024, 2);
     REQUIRE(push_success);
@@ -34,7 +34,7 @@ TEST_CASE("Write to empty, highest priority and read back",
 TEST_CASE("Write multiple with different priority and read back ensuring "
           "proper sequence",
           "[pq_write_multiple_read_multiple]") {
-    lockfree::PriorityQueue<uint64_t, 10, 4> queue;
+    lockfree::spsc::PriorityQueue<uint64_t, 10, 4> queue;
 
     bool push_success = queue.Push(256, 2);
     REQUIRE(push_success);
@@ -67,7 +67,7 @@ TEST_CASE("Write multiple with different priority and read back ensuring "
 }
 
 TEST_CASE("Optional API", "[pq_optional_api]") {
-    lockfree::PriorityQueue<int16_t, 20, 3> queue;
+    lockfree::spsc::PriorityQueue<int16_t, 20, 3> queue;
 
     bool const push_success = queue.Push(-1024, 0);
     REQUIRE(push_success);

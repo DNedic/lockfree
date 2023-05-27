@@ -1,7 +1,7 @@
 /**************************************************************
- * @file queue.hpp
- * @brief A queue implementation written in standard c++11
- * suitable for both low-end microcontrollers all the way
+ * @file priority_queue.hpp
+ * @brief A priority queue implementation written in standard
+ * c++11 suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
  * @version	1.1.0
@@ -41,8 +41,8 @@
  **************************************************************/
 
 /************************** INCLUDE ***************************/
-#ifndef LOCKFREE_QUEUE_HPP
-#define LOCKFREE_QUEUE_HPP
+#ifndef LOCKFREE_PRIORITY_QUEUE_HPP
+#define LOCKFREE_PRIORITY_QUEUE_HPP
 
 #include <atomic>
 #include <cstddef>
@@ -52,61 +52,55 @@
 #include <optional>
 #endif
 
-namespace lockfree {
+#include "queue.hpp"
 
+namespace lockfree {
+namespace spsc {
 /*************************** TYPES ****************************/
 
-template <typename T, size_t size> class Queue {
+template <typename T, size_t size, size_t priority_count> class PriorityQueue {
     static_assert(std::is_trivial<T>::value, "The type T must be trivial");
     static_assert(size > 2, "Buffer size must be bigger than 2");
 
     /********************** PUBLIC METHODS ************************/
   public:
-    Queue();
-
     /**
-     * @brief Adds an element into the queue.
+     * @brief Adds an element with a specified priority into the queue.
      * Should only be called from the producer thread.
-     * @param[in] element
+     * @param[in] Element
+     * @param[in] Element priority
      * @retval Operation success
      */
-    bool Push(const T &element);
+    bool Push(const T &element, const size_t priority);
 
     /**
-     * @brief Removes an element from the queue.
+     * @brief Removes an element with the highest priority from the queue.
      * Should only be called from the consumer thread.
-     * @param[out] element
+     * @param[out] Element
      * @retval Operation success
      */
     bool Pop(T &element);
 
 #if __cplusplus >= 201703L
     /**
-     * @brief Removes an element from the queue.
+     * @brief Removes an element with the highest priority from the queue.
      * Should only be called from the consumer thread.
-     * @retval Either the element or nothing
+     * @retval Either the element or nothing if the queue is empty.
      */
     std::optional<T> PopOptional();
 #endif
 
     /********************** PRIVATE MEMBERS ***********************/
   private:
-    T _data[size]; /**< Data array */
-#if LOCKFREE_CACHE_COHERENT
-    alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _r; /**< Read index */
-    alignas(
-        LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _w; /**< Write index */
-#else
-    std::atomic_size_t _r; /**< Read index */
-    std::atomic_size_t _w; /**< Write index */
-#endif
+    Queue<T, size> _subqueue[priority_count];
 };
 
 /************************** INCLUDE ***************************/
 
 /* Include the implementation */
-#include "queue_impl.hpp"
+#include "priority_queue_impl.hpp"
 
+} /* namespace spsc */
 } /* namespace lockfree */
 
-#endif /* LOCKFREE_QUEUE_HPP */
+#endif /* LOCKFREE_PRIORITY_QUEUE_HPP */

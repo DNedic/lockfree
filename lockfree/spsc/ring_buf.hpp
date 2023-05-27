@@ -54,7 +54,7 @@
 #endif
 
 namespace lockfree {
-
+namespace spsc {
 /*************************** TYPES ****************************/
 
 template <typename T, size_t size> class RingBuf {
@@ -203,6 +203,7 @@ template <typename T, size_t size> class RingBuf {
 /* Include the implementation */
 #include "ring_buf_impl.hpp"
 
+} /* namespace spsc */
 } /* namespace lockfree */
 
 #endif /* LOCKFREE_RING_BUF_HPP */

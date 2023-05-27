@@ -4,7 +4,7 @@
 #include "lockfree.hpp"
 
 TEST_CASE("Write to the beginning", "[bb_write_beginning]") {
-    lockfree::BipartiteBuf<uint8_t, 512U> bb;
+    lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
     const uint8_t test_data[320] = {0xE5U};
 
     auto *write_location =
@@ -23,13 +23,13 @@ TEST_CASE("Write to the beginning", "[bb_write_beginning]") {
 }
 
 TEST_CASE("Try to acquire too much data", "[bb_acquire_too_much]") {
-    lockfree::BipartiteBuf<uint8_t, 512U> bb;
+    lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
     auto *write_location = bb.WriteAcquire(512U + rand());
     REQUIRE(write_location == nullptr);
 }
 
 TEST_CASE("Try to acquire read with an empty buffer", "[bb_read_empty]") {
-    lockfree::BipartiteBuf<uint8_t, 512U> bb;
+    lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
 
     auto read = bb.ReadAcquire();
     REQUIRE(read.first == nullptr);
@@ -37,7 +37,7 @@ TEST_CASE("Try to acquire read with an empty buffer", "[bb_read_empty]") {
 }
 
 TEST_CASE("Write with overflow condition", "[bb_write_overflow]") {
-    lockfree::BipartiteBuf<uint32_t, 512U> bb;
+    lockfree::spsc::BipartiteBuf<uint32_t, 512U> bb;
     const uint32_t test_data[320] = {0xE5A1D2C3U};
 
     /* Write to the start and read the data back */
@@ -67,7 +67,7 @@ TEST_CASE("Write with overflow condition", "[bb_write_overflow]") {
 
 TEST_CASE("Read data written after overflow condition write",
           "[bb_read_after_overflow_write]") {
-    lockfree::BipartiteBuf<int16_t, 512U> bb;
+    lockfree::spsc::BipartiteBuf<int16_t, 512U> bb;
     const int16_t test_data[320] = {-222};
 
     /* Write to the start and read the data back */
@@ -106,7 +106,7 @@ TEST_CASE("Read data written after overflow condition write",
 
 TEST_CASE("Interleaved write and read with enough space",
           "[bb_interleaved_success]") {
-    lockfree::BipartiteBuf<double, 512U> bb;
+    lockfree::spsc::BipartiteBuf<double, 512U> bb;
     const double test_data[320] = {42.4242};
 
     /* 1. Complete write */
@@ -133,7 +133,7 @@ TEST_CASE("Interleaved write and read with enough space",
 
 TEST_CASE("Interleaved write and read with enough space 2",
           "[bb_interleaved_success2]") {
-    lockfree::BipartiteBuf<char, 512U> bb;
+    lockfree::spsc::BipartiteBuf<char, 512U> bb;
     const char test_data[320] = {'A'};
 
     /* 1. Complete write */
@@ -157,7 +157,7 @@ TEST_CASE("Interleaved write and read with enough space 2",
 
 TEST_CASE("Interleaved write and read without enough space",
           "[bb_interleaved_fail]") {
-    lockfree::BipartiteBuf<uint8_t, 512U> bb;
+    lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
     const uint8_t test_data[320] = {0xE5U};
 
     /* 1. Complete write */
@@ -181,7 +181,7 @@ TEST_CASE("Test keeping the chunk of data when write ends exactly in the end "
           "of the buffer.",
           "[bb_exact_end_write_release_proper_invalidation_test]") {
     constexpr size_t size = 8;
-    lockfree::BipartiteBuf<uint8_t, size * 2> bb;
+    lockfree::spsc::BipartiteBuf<uint8_t, size * 2> bb;
 
     // First half, no overflow.
     auto *base = bb.WriteAcquire(size);
@@ -199,7 +199,7 @@ TEST_CASE("Test keeping the chunk of data when write ends exactly in the end "
 }
 
 TEST_CASE("std::span API test", "[bb_std_span_api]") {
-    lockfree::BipartiteBuf<double, 512U> bb;
+    lockfree::spsc::BipartiteBuf<double, 512U> bb;
 
     auto *write_ptr = bb.WriteAcquire(320);
     bb.WriteRelease(0);

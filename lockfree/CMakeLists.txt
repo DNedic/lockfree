@@ -9,5 +9,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
 
 target_include_directories(${PROJECT_NAME}
 INTERFACE
-    inc
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    spsc
+    mpmc
 )

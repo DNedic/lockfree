@@ -18,7 +18,7 @@ Shown here is an example of raw pointer API use:
 ```cpp
 #include "lockfree.hpp"
 // --snip--
-lockfree::RingBuf<uint8_t, 1024U> rb_uart;
+lockfree::spsc::RingBuf<uint8_t, 1024U> rb_uart;
 ```
 
 * Producer thread/interrupt

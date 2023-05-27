@@ -1,7 +1,7 @@
 # lockfree
 ![CMake](https://github.com/DNedic/lockfree/actions/workflows/.github/workflows/cmake.yml/badge.svg)
 
-`lockfree` is a collection of lock-free single-producer/single-consumer data structures written in standard C++11 and suitable for all platforms - from deeply embedded to HPC.
+`lockfree` is a collection of lock-free data structures written in standard C++11 and suitable for all platforms - from deeply embedded to HPC.
 
 ## What are lock-free data structures?
 
@@ -9,18 +9,25 @@ Lock-free data structures are data structures that are thread and interrupt safe
 
 ## Why use `lockfree`
 * Written in standard C++11, compatible with all platforms supporting it
-* All data structures are thread and multicore safe in single producer single consumer scenarios
+* All data structures are thread and multicore safe in their respective usecases
 * No dynamic allocation
 * Optimized for high performance
 * MIT Licensed
 * Additional APIs for newer C++ versions
 
 ## What data structures are available?
-At the moment the following data structures are available:
-* [Queue](docs/queue.md) - Best for single element operations, extremely fast, simple API consisting of only 2 methods.
-* [Ring Buffer](docs/ring_buf.md) - A more general data structure with the ability to handle multiple elements at a time, uses standard library copies making it very fast for bulk operations.
-* [Bipartite Buffer](docs/bipartite_buf.md) - A variation of the ring buffer with the ability to always provide linear space in the buffer, enables in-buffer processing.
-* [Priority Queue](docs/priority_queue.md) - A Variation of the queue with the ability to provide different priorities for elements, very useful for things like signals, events and communication packets.
+### Single-producer single-consumer data structures
+* [Queue](docs/spsc/queue.md) - Best for single element operations, extremely fast, simple API consisting of only 2 methods.
+* [Ring Buffer](docs/spsc/ring_buf.md) - A more general data structure with the ability to handle multiple elements at a time, uses standard library copies making it very fast for bulk operations.
+* [Bipartite Buffer](docs/spsc/bipartite_buf.md) - A variation of the ring buffer with the ability to always provide linear space in the buffer, enables in-buffer processing.
+* [Priority Queue](docs/spsc/priority_queue.md) - A Variation of the queue with the ability to provide different priorities for elements, very useful for things like signals, events and communication packets.
+
+These data structures are more performant and should generally be used whenever there is only one thread/interrupt pushing data and another one retrieving it.
+
+### Multi-producer multi-consumer data structures
+There are no multi producer multi consumer data structures implemented currently.
+
+These data structures are more general, supporting multiple producers and consumers at the same time, however they have storage and performance overhead compared to single producer single consumer data structures.
 
 ## How to get
 There are three main ways to get the library:
@@ -55,4 +62,4 @@ While locking usually isn't expensive on embedded systems such as microcontrolle
 * Encapsulation, the data buffer is a class member instead of being passed by a pointer
 
 ### Give me more theory
-All structures in `lockfree` are **bounded**, **array-based**, **lockfree**, **waitfree** and **termination safe** for single consumer single producer scenarios. For more insight into lock-free programming, take a look at this [brilliant talk series](https://youtu.be/c1gO9aB9nbs) from Herb Sutter.
+All structures in `lockfree` are **bounded**, **array-based** and **lockfree**, spsc data structures are also **waitfree** and **termination safe**. For more insight into lock-free programming, take a look at this [brilliant talk series](https://youtu.be/c1gO9aB9nbs) from Herb Sutter.

@@ -51,7 +51,7 @@
 
 /************************** INCLUDE ***************************/
 
-#include "bipartite_buf.hpp"
-#include "priority_queue.hpp"
-#include "queue.hpp"
-#include "ring_buf.hpp"
+#include "spsc/bipartite_buf.hpp"
+#include "spsc/priority_queue.hpp"
+#include "spsc/queue.hpp"
+#include "spsc/ring_buf.hpp"
