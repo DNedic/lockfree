@@ -17,8 +17,9 @@ add_executable(tests
     spsc_queue.cpp
     ring_buf.cpp
     bipartite_buf.cpp
-    priority_queue.cpp
+    spsc_priority_queue.cpp
     mpmc_queue.cpp
+    mpmc_priority_queue.cpp
 )
 
 # Required in order to test the std::span API as well
