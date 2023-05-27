@@ -62,5 +62,11 @@ While locking usually isn't expensive on embedded systems such as microcontrolle
 * Higher performance due to compile-time known size and header-only implementation
 * Encapsulation, the data buffer is a class member instead of being passed by a pointer
 
-### Give me more theory
-All structures in `lockfree` are **bounded**, **array-based** and **lockfree**, spsc data structures are also **waitfree** and **termination safe**. For more insight into lock-free programming, take a look at this [brilliant talk series](https://youtu.be/c1gO9aB9nbs) from Herb Sutter.
+### What is the formal classification of the data structures in `lockfree`?
+All structures in `lockfree` are **bounded**, **array-based** and **lockfree**, spsc data structures are also **waitfree** and **termination safe**. 
+
+## Theory and references
+For more insight into lock-free programming, take a look at:
+* This [brilliant talk series](https://youtu.be/c1gO9aB9nbs) from Herb Sutter
+* [Live Lock-Free or Deadlock](https://youtu.be/lVBvHbJsg5Y) talk series from Fedor Pikus
+* Dmitry Vyukov's excellent [blog](https://www.1024cores.net/home/lock-free-algorithms/introduction)
