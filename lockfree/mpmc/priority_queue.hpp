@@ -2,8 +2,7 @@
  * @file priority_queue.hpp
  * @brief A priority queue implementation written in standard
  * c++11 suitable for both low-end microcontrollers all the way
- * to HPC machines. Lock-free for single consumer single
- * producer scenarios.
+ * to HPC machines. Lock-free for all scenarios.
  * @version	2.0.0
  * @date 27. May 2023
  * @author Djordje Nedic
