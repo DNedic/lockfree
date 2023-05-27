@@ -42,7 +42,7 @@
 /************************** DEFINE ****************************/
 
 #ifndef LOCKFREE_CACHE_COHERENT
-#define LOCKFREE_CACHE_COHERENT false
+#define LOCKFREE_CACHE_COHERENT true
 #endif
 
 #ifndef LOCKFREE_CACHELINE_LENGTH

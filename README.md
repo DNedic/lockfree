@@ -37,11 +37,11 @@ There are three main ways to get the library:
 * By downloading a release from GitHub
 
 ## Configuration
-For cache coherent systems the [False Sharing](https://en.wikipedia.org/wiki/False_sharing) phenomenom can reduce performance to some extent which is why passing ```LOCKFREE_CACHE_COHERENT``` as ```true``` is advisable. This aligns the indexes to ```LOCKFREE_CACHELINE_LENGTH```, ```64``` by default.
+`lockfree` uses cacheline padding for indexes to avoid the [False Sharing](https://en.wikipedia.org/wiki/False_sharing) phenomenom by default, avoiding the performance loss of cacheline invalidation  on cache coherent systems.  This aligns the indexes to ```LOCKFREE_CACHELINE_LENGTH```, ```64``` by default.
 
-On embedded systems, ```LOCKFREE_CACHE_COHERENT``` should almost always be left as ```false```.
+On embedded systems, ```LOCKFREE_CACHE_COHERENT``` should almost always be set as ```false``` to avoid wasting memory.
 
-Some systems have a non-typical cacheline length (for instance the apple M1/M2 CPUs have a cacheline length of 128 bytes), and ```LOCKFREE_CACHELINE_LENGTH``` should be set accordingly in those cases.
+Additionally, some systems have a non-typical cacheline length (for instance the apple M1/M2 CPUs have a cacheline length of 128 bytes), and ```LOCKFREE_CACHELINE_LENGTH``` should be set accordingly in those cases.
 
 ## FAQ
 ### Why would I use this over locking data structures on a hosted machine?
