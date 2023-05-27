@@ -11,17 +11,17 @@ Shown here is an example of typical use:
 ```cpp
 #include "lockfree.hpp"
 // --snip--
-lockfree::PriorityQueue<Event, 64, 3> queue_events;
+lockfree::mpmc::PriorityQueue<Event, 64, 3> queue_events;
 ```
 
-* Producer thread/interrupt
+* Producer threads/interrupts
 ```cpp
 Event event = actor1.Run();
 // --snip--
 while(!queue_events.Push(event, priority)) {}
 ```
 
-* Consumer thread/interrupt
+* Consumer threads/interrupts
 ```cpp
 Event event_in;
 bool read_success = queue_events.Pop(read);

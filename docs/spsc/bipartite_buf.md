@@ -15,7 +15,7 @@ Shown here is an example of typical use:
 ```cpp
 #include "lockfree.hpp"
 // --snip--
-lockfree::BipartiteBuf<uint32_t, 1024U> bb_adc;
+lockfree::spsc::BipartiteBuf<uint32_t, 1024U> bb_adc;
 ```
 
 * Consumer thread/interrupt

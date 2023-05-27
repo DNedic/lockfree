@@ -1,11 +1,11 @@
 /**************************************************************
- * @file priority_queue.hpp
- * @brief A priority queue implementation written in standard
- * c++11 suitable for both low-end microcontrollers all the way
+ * @file queue.hpp
+ * @brief A queue implementation written in standard c++11
+ * suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
- * @version	1.1.0
- * @date 19. May 2023
+ * @version	2.0.0
+ * @date 27. May 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,12 +37,12 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v1.1.0
+ * Version:         v2.0.0
  **************************************************************/
 
 /************************** INCLUDE ***************************/
-#ifndef LOCKFREE_PRIORITY_QUEUE_HPP
-#define LOCKFREE_PRIORITY_QUEUE_HPP
+#ifndef LOCKFREE_QUEUE_HPP
+#define LOCKFREE_QUEUE_HPP
 
 #include <atomic>
 #include <cstddef>
@@ -52,54 +52,62 @@
 #include <optional>
 #endif
 
-#include "queue.hpp"
-
 namespace lockfree {
-
+namespace spsc {
 /*************************** TYPES ****************************/
 
-template <typename T, size_t size, size_t priority_count> class PriorityQueue {
+template <typename T, size_t size> class Queue {
     static_assert(std::is_trivial<T>::value, "The type T must be trivial");
     static_assert(size > 2, "Buffer size must be bigger than 2");
 
     /********************** PUBLIC METHODS ************************/
   public:
-    /**
-     * @brief Adds an element with a specified priority into the queue.
-     * Should only be called from the producer thread.
-     * @param[in] Element
-     * @param[in] Element priority
-     * @retval Operation success
-     */
-    bool Push(const T &element, const size_t priority);
+    Queue();
 
     /**
-     * @brief Removes an element with the highest priority from the queue.
+     * @brief Adds an element into the queue.
+     * Should only be called from the producer thread.
+     * @param[in] element
+     * @retval Operation success
+     */
+    bool Push(const T &element);
+
+    /**
+     * @brief Removes an element from the queue.
      * Should only be called from the consumer thread.
-     * @param[out] Element
+     * @param[out] element
      * @retval Operation success
      */
     bool Pop(T &element);
 
 #if __cplusplus >= 201703L
     /**
-     * @brief Removes an element with the highest priority from the queue.
+     * @brief Removes an element from the queue.
      * Should only be called from the consumer thread.
-     * @retval Either the element or nothing if the queue is empty.
+     * @retval Either the element or nothing
      */
     std::optional<T> PopOptional();
 #endif
 
     /********************** PRIVATE MEMBERS ***********************/
   private:
-    Queue<T, size> _subqueue[priority_count];
+    T _data[size]; /**< Data array */
+#if LOCKFREE_CACHE_COHERENT
+    alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _r; /**< Read index */
+    alignas(
+        LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _w; /**< Write index */
+#else
+    std::atomic_size_t _r; /**< Read index */
+    std::atomic_size_t _w; /**< Write index */
+#endif
 };
 
 /************************** INCLUDE ***************************/
 
 /* Include the implementation */
-#include "priority_queue_impl.hpp"
+#include "queue_impl.hpp"
 
+} /* namespace spsc */
 } /* namespace lockfree */
 
-#endif /* LOCKFREE_PRIORITY_QUEUE_HPP */
+#endif /* LOCKFREE_QUEUE_HPP */

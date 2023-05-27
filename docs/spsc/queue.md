@@ -11,7 +11,7 @@ Shown here is an example of typical use:
 ```cpp
 #include "lockfree.hpp"
 // --snip--
-lockfree::Queue<uint32_t, 128U> queue_adc;
+lockfree::spsc::Queue<uint32_t, 128U> queue_adc;
 ```
 
 * Producer thread/interrupt

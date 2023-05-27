@@ -4,8 +4,8 @@
  * standard c++11 suitable for all systems, from low-end
  * microcontrollers to HPC machines.
  * Lock-free for single consumer single producer scenarios.
- * @version	1.2.0
- * @date 19. May 2023
+ * @version	2.0.0
+ * @date 27. May 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,7 +37,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v1.1.0
+ * Version:         v2.0.0
  **************************************************************/
 
 /************************** INCLUDE ***************************/
@@ -53,7 +53,7 @@
 #endif
 
 namespace lockfree {
-
+namespace spsc {
 /*************************** TYPES ****************************/
 
 template <typename T, size_t size> class BipartiteBuf {
@@ -162,6 +162,7 @@ template <typename T, size_t size> class BipartiteBuf {
 /* Include the implementation */
 #include "bipartite_buf_impl.hpp"
 
+} /* namespace spsc */
 } /* namespace lockfree */
 
 #endif /* LOCKFREE_BIPARTITE_BUF_HPP */

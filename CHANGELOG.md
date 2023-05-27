@@ -1,7 +1,13 @@
 # Changelog
 
+## 2.0.0
+
+- Added multi-producer multi-consumer [Queue](docs/mpmc/queue.md) and [Priority Queue](docs/mpmc/priority_queue.md) data structures
+- **Important**: SPSC data structures have been moved to the `spsc` namespace
+- **Important**: Cacheline padding is now the default behaviour as analytics showed most people are using the library on cache coherent systems, for embedded systems it is necessary to set `LOCKFREE_CACHE_COHERENT` to `false` to avoid wasting memory
+
 ## 1.1.0
-- Added the [Priority Queue](docs/priority_queue.md) data structure
+- Added the [Priority Queue](docs/spsc/priority_queue.md) data structure
 
 ## 1.0.2
 - Made all class members accidentally public private

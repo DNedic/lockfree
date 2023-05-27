@@ -1,11 +1,11 @@
 /**************************************************************
- * @file queue_impl.hpp
- * @brief A queue implementation written in standard c++11
- * suitable for both low-end microcontrollers all the way
+ * @file priority_queue_impl.hpp
+ * @brief A priority queue implementation written in standard
+ * c++11 suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
- * @version	1.1.0
- * @date 19. May 2023
+ * @version	2.0.0
+ * @date 27. May 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,68 +37,40 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v1.1.0
+ * Version:         v2.0.0
  **************************************************************/
+
+/************************** INCLUDE ***************************/
+
+#include <cassert>
 
 /********************** PUBLIC METHODS ************************/
 
-template <typename T, size_t size> Queue<T, size>::Queue() : _r(0U), _w(0U) {}
+template <typename T, size_t size, size_t priority_count>
+bool PriorityQueue<T, size, priority_count>::Push(const T &element,
+                                                  const size_t priority) {
+    assert(priority < priority_count);
 
-template <typename T, size_t size> bool Queue<T, size>::Push(const T &element) {
-    /* Preload indexes with adequate memory ordering */
-    const size_t w = _w.load(std::memory_order_relaxed);
-    const size_t r = _r.load(std::memory_order_acquire);
-
-    /*
-       The full check needs to be performed using the next write index not to
-       miss the case when the read index wrapped and write index is at the end
-     */
-    size_t w_next = w + 1;
-    if (w_next == size) {
-        w_next = 0U;
-    }
-
-    /* Full check  */
-    if (w_next == r) {
-        return false;
-    }
-
-    /* Place the element */
-    _data[w] = element;
-
-    /* Store the next write index */
-    _w.store(w_next, std::memory_order_release);
-    return true;
+    return _subqueue[priority].Push(element);
 }
 
-template <typename T, size_t size> bool Queue<T, size>::Pop(T &element) {
-    /* Preload indexes with adequate memory ordering */
-    size_t r = _r.load(std::memory_order_relaxed);
-    const size_t w = _w.load(std::memory_order_acquire);
+template <typename T, size_t size, size_t priority_count>
+bool PriorityQueue<T, size, priority_count>::Pop(T &element) {
 
-    /* Empty check */
-    if (r == w) {
-        return false;
+    for (size_t priority = priority_count; priority-- > 0;) {
+        if (_subqueue[priority].Pop(element)) {
+            return true;
+        }
     }
 
-    /* Remove the element */
-    element = _data[r];
-
-    /* Increment the read index */
-    r++;
-    if (r == size) {
-        r = 0U;
-    }
-
-    /* Store the read index */
-    _r.store(r, std::memory_order_release);
-    return true;
+    /* Could find no elements at all */
+    return false;
 }
 
 /********************* std::optional API **********************/
 #if __cplusplus >= 201703L
-template <typename T, size_t size>
-std::optional<T> Queue<T, size>::PopOptional() {
+template <typename T, size_t size, size_t priority_count>
+std::optional<T> PriorityQueue<T, size, priority_count>::PopOptional() {
     T element;
     bool result = Pop(element);
 

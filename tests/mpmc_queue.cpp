@@ -5,8 +5,8 @@
 
 #include "lockfree.hpp"
 
-TEST_CASE("Write to empty and read back", "[q_write_empty]") {
-    lockfree::Queue<int16_t, 20> queue;
+TEST_CASE("Write to empty and read back", "[mpmc_q_write_empty]") {
+    lockfree::mpmc::Queue<int16_t, 20> queue;
 
     bool const push_success = queue.Push(-1024);
     REQUIRE(push_success);
@@ -17,27 +17,29 @@ TEST_CASE("Write to empty and read back", "[q_write_empty]") {
     REQUIRE(pop_success);
 }
 
-TEST_CASE("Read empty", "[q_read_empty]") {
-    lockfree::Queue<uint8_t, 20> queue;
+TEST_CASE("Read empty", "[mpmc_q_read_empty]") {
+    lockfree::mpmc::Queue<uint8_t, 20> queue;
 
     uint8_t read = 0;
     bool const pop_success = queue.Pop(read);
     REQUIRE(!pop_success);
 }
 
-TEST_CASE("Write full", "[q_write_full]") {
-    lockfree::Queue<uint8_t, 5> queue;
+TEST_CASE("Write full", "[mpmc_q_write_full]") {
+    lockfree::mpmc::Queue<uint8_t, 5> queue;
 
     bool push_success = queue.Push(1U);
     push_success = queue.Push(1U);
     push_success = queue.Push(2U);
     push_success = queue.Push(3U);
     push_success = queue.Push(5U);
+    push_success = queue.Push(6U);
     REQUIRE(!push_success);
 }
 
-TEST_CASE("Write multiple to empty and read back", "[q_write_empty_multiple]") {
-    lockfree::Queue<float, 20> queue;
+TEST_CASE("Write multiple to empty and read back",
+          "[mpmc_q_write_empty_multiple]") {
+    lockfree::mpmc::Queue<float, 20> queue;
 
     bool push_success = queue.Push(2.7183F);
     REQUIRE(push_success);
@@ -58,8 +60,8 @@ TEST_CASE("Write multiple to empty and read back", "[q_write_empty_multiple]") {
 }
 
 TEST_CASE("Write with overflow and read back from start",
-          "[q_write_overflow]") {
-    lockfree::Queue<int32_t, 4> queue;
+          "[mpmc_q_write_overflow]") {
+    lockfree::mpmc::Queue<int32_t, 4> queue;
 
     bool push_success = queue.Push(-1024);
     push_success = queue.Push(111);
@@ -79,8 +81,8 @@ TEST_CASE("Write with overflow and read back from start",
     REQUIRE(read == 1000);
 }
 
-TEST_CASE("Optional API", "[q_optional_api]") {
-    lockfree::Queue<uint64_t, 20> queue;
+TEST_CASE("Optional API", "[mpmc_q_optional_api]") {
+    lockfree::mpmc::Queue<uint64_t, 20> queue;
 
     REQUIRE(!queue.PopOptional());
     queue.Push(-1024);
