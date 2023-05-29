@@ -5,11 +5,11 @@
 
 ## What are lock-free data structures?
 
-Lock-free data structures are data structures that are thread and interrupt safe without having to use mutual exclusion mechanisms. Lock-free data structures are most useful for inter process communication, but due to the efficiency of `lockfree`, it can safely be used for single threaded uses as well, making it good for general purpose use.
+Lock-free data structures are data structures that are thread and interrupt safe for concurrent use without having to use mutual exclusion mechanisms. They are most useful for inter process communication, and often scale much better than lock-based structures with the number of operations and threads.
 
 ## Why use `lockfree`
 * Written in standard C++11, compatible with all platforms supporting it
-* All data structures are thread and multicore safe in their respective usecases
+* All data structures are thread and interrupt safe in their respective usecases
 * No dynamic allocation
 * Optimized for high performance
 * MIT Licensed
