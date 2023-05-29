@@ -43,6 +43,7 @@
 /************************** INCLUDE ***************************/
 
 #include <algorithm>
+#include <cassert>
 
 /********************** PUBLIC METHODS ************************/
 
@@ -89,6 +90,7 @@ void BipartiteBuf<T, size>::WriteRelease(const size_t written) {
     }
 
     /* Increment the write index */
+    assert(w + written <= size);
     w += written;
 
     /* If we wrote over invalidated parts of the buffer move the invalidate
@@ -147,6 +149,7 @@ void BipartiteBuf<T, size>::ReadRelease(const size_t read) {
     }
 
     /* Increment the read index and wrap to 0 if needed */
+    assert(r + read <= size);
     r += read;
     if (r == size) {
         r = 0U;
