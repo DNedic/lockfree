@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+- Added asserts in the [Bipartite Buffer](docs/spsc/bipartite_buf.md) to protect against buffer overruns
+- Various README improvements
+
 ## 2.0.0
 
 - Added multi-producer multi-consumer [Queue](docs/mpmc/queue.md) and [Priority Queue](docs/mpmc/priority_queue.md) data structures
