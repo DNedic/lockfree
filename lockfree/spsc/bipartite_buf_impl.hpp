@@ -106,7 +106,7 @@ void BipartiteBuf<T, size>::WriteRelease(const size_t written) {
     }
 
     /* Store the indexes with adequate memory ordering */
-    _i.store(i, std::memory_order_release);
+    _i.store(i, std::memory_order_relaxed);
     _w.store(w, std::memory_order_release);
 }
 
@@ -115,7 +115,7 @@ std::pair<T *, size_t> BipartiteBuf<T, size>::ReadAcquire() {
     /* Preload variables with adequate memory ordering */
     const size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);
-    const size_t i = _i.load(std::memory_order_acquire);
+    const size_t i = _i.load(std::memory_order_relaxed);
 
     /* When read and write indexes are equal, the buffer is empty */
     if (r == w) {
