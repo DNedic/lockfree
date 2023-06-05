@@ -45,20 +45,18 @@
 template <typename T, size_t size> Queue<T, size>::Queue() : _r(0U), _w(0U) {}
 
 template <typename T, size_t size> bool Queue<T, size>::Push(const T &element) {
-    /* Preload indexes with adequate memory ordering */
-    const size_t w = _w.load(std::memory_order_relaxed);
-    const size_t r = _r.load(std::memory_order_acquire);
-
     /*
        The full check needs to be performed using the next write index not to
        miss the case when the read index wrapped and write index is at the end
      */
+    const size_t w = _w.load(std::memory_order_relaxed);
     size_t w_next = w + 1;
     if (w_next == size) {
         w_next = 0U;
     }
 
     /* Full check  */
+    const size_t r = _r.load(std::memory_order_acquire);
     if (w_next == r) {
         return false;
     }
