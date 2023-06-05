@@ -4,8 +4,8 @@
  * suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
- * @version	2.0.1
- * @date 29. May 2023
+ * @version	2.0.2
+ * @date 6. June 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,7 +37,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v2.0.1
+ * Version:         v2.0.2
  **************************************************************/
 
 /********************** PUBLIC METHODS ************************/

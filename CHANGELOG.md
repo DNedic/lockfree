@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+- Performance and code conciseness improvements in single-producer single-consumer [Queue](docs/spsc/queue.md), [Priority Queue](docs/spsc/priority_queue.md) and [Bipartite Buffer](docs/spsc/bipartite_buf.md)
+
 ## 2.0.1
 
 - Added asserts in the [Bipartite Buffer](docs/spsc/bipartite_buf.md) to protect against buffer overruns
