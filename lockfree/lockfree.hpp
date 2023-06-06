@@ -39,6 +39,9 @@
  * Version:         v2.0.2
  **************************************************************/
 
+#ifndef LOCKFREE_HPP
+#define LOCKFREE_HPP
+
 /************************** DEFINE ****************************/
 
 #ifndef LOCKFREE_CACHE_COHERENT
@@ -58,3 +61,5 @@
 
 #include "mpmc/priority_queue.hpp"
 #include "mpmc/queue.hpp"
+
+#endif /* LOCKFREE_HPP */
