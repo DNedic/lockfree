@@ -201,7 +201,7 @@ bool RingBuf<T, size>::Peek(std::array<T, arr_size> &data) const {
 }
 
 /********************** std::span API *************************/
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
 template <typename T, size_t size>
 bool RingBuf<T, size>::Write(std::span<const T> data) {
     return Write(data.data(), data.size());

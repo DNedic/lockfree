@@ -48,7 +48,7 @@
 #include <cstddef>
 #include <type_traits>
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
 #include <span>
 #endif
 
@@ -72,7 +72,7 @@ template <typename T, size_t size> class BipartiteBuf {
      */
     T *WriteAcquire(const size_t free_required);
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
      * @brief Acquires a linear region in the bipartite buffer for writing
      * Should only be called from the producer thread.
@@ -90,7 +90,7 @@ template <typename T, size_t size> class BipartiteBuf {
      */
     void WriteRelease(const size_t written);
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
      * @brief Releases the bipartite buffer after a write
      * Should only be called from the producer thread.
@@ -108,7 +108,7 @@ template <typename T, size_t size> class BipartiteBuf {
      */
     std::pair<T *, size_t> ReadAcquire();
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
      * @brief Acquires a linear region in the bipartite buffer for reading
      * Should only be called from the consumer thread.
@@ -125,7 +125,7 @@ template <typename T, size_t size> class BipartiteBuf {
      */
     void ReadRelease(const size_t read);
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
      * @brief Releases the bipartite buffer after a read
      * Should only be called from the consumer thread.

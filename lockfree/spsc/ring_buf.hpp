@@ -49,7 +49,7 @@
 #include <cstddef>
 #include <type_traits>
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
 #include <span>
 #endif
 
@@ -82,7 +82,7 @@ template <typename T, size_t size> class RingBuf {
      */
     template <size_t arr_size> bool Write(const std::array<T, arr_size> &data);
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
      * @brief Writes data to the ring buffer.
      * Should only be called from the producer thread.
@@ -109,7 +109,7 @@ template <typename T, size_t size> class RingBuf {
      */
     template <size_t arr_size> bool Read(std::array<T, arr_size> &data);
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
      * @brief Reads data from the ring buffer.
      * Should only be called from the consumer thread.
@@ -151,7 +151,7 @@ template <typename T, size_t size> class RingBuf {
      * @param[out] Span to read to
      * @retval Write success
      */
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     bool Peek(std::span<T> data) const;
 #endif
 

@@ -111,7 +111,7 @@ template <typename T, size_t size> bool Queue<T, size>::Pop(T &element) {
 }
 
 /********************* std::optional API **********************/
-#if __cplusplus >= 201703L
+#if __cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L)
 template <typename T, size_t size>
 std::optional<T> Queue<T, size>::PopOptional() {
     T element;
