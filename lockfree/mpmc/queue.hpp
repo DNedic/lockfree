@@ -47,7 +47,7 @@
 #include <cstddef>
 #include <type_traits>
 
-#if __cplusplus >= 201703L
+#if __cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L)
 #include <optional>
 #endif
 
@@ -77,7 +77,7 @@ template <typename T, size_t size> class Queue {
      */
     bool Pop(T &element);
 
-#if __cplusplus >= 201703L
+#if __cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L)
     /**
      * @brief Removes an element from the queue.
      * @retval Either the element or nothing

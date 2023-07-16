@@ -160,7 +160,7 @@ void BipartiteBuf<T, size>::ReadRelease(const size_t read) {
 }
 
 /********************** std::span API *************************/
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
 template <typename T, size_t size>
 std::span<T>
 BipartiteBuf<T, size>::WriteAcquireSpan(const size_t free_required) {
