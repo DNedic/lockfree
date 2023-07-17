@@ -4,8 +4,8 @@
  * c++11 suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for single consumer single
  * producer scenarios.
- * @version	2.0.2
- * @date 6. June 2023
+ * @version	2.0.3
+ * @date 17. July 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,7 +37,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v2.0.2
+ * Version:         v2.0.3
  **************************************************************/
 
 /************************** INCLUDE ***************************/
@@ -71,7 +71,7 @@ template <typename T, size_t size, size_t priority_count> class PriorityQueue {
      * @param[in] Element priority
      * @retval Operation success
      */
-    bool Push(const T &element, const size_t priority);
+    bool Push(const T &element, size_t priority);
 
     /**
      * @brief Removes an element with the highest priority from the queue.

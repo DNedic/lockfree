@@ -4,8 +4,8 @@
  * standard c++11 suitable for all systems, from low-end
  * microcontrollers to HPC machines.
  * Lock-free for single consumer single producer scenarios.
- * @version	2.0.2
- * @date 6. June 2023
+ * @version	2.0.3
+ * @date 17. July 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -37,7 +37,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v2.0.2
+ * Version:         v2.0.3
  **************************************************************/
 
 /************************** INCLUDE ***************************/
@@ -70,7 +70,7 @@ template <typename T, size_t size> class BipartiteBuf {
      * @param[in] Free linear space in the buffer required
      * @retval Pointer to the beginning of the linear space
      */
-    T *WriteAcquire(const size_t free_required);
+    T *WriteAcquire(size_t free_required);
 
 #if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
@@ -79,7 +79,7 @@ template <typename T, size_t size> class BipartiteBuf {
      * @param[in] Free linear space in the buffer required
      * @retval Span of the linear space
      */
-    std::span<T> WriteAcquireSpan(const size_t free_required);
+    std::span<T> WriteAcquireSpan(size_t free_required);
 #endif
 
     /**
@@ -88,7 +88,7 @@ template <typename T, size_t size> class BipartiteBuf {
      * @param[in] Elements written to the linear space
      * @retval None
      */
-    void WriteRelease(const size_t written);
+    void WriteRelease(size_t written);
 
 #if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
@@ -97,7 +97,7 @@ template <typename T, size_t size> class BipartiteBuf {
      * @param[in] Span of the linear space
      * @retval None
      */
-    void WriteRelease(const std::span<T> written);
+    void WriteRelease(std::span<T> written);
 #endif
 
     /**
@@ -123,7 +123,7 @@ template <typename T, size_t size> class BipartiteBuf {
      * @param[in] Elements read from the linear region
      * @retval None
      */
-    void ReadRelease(const size_t read);
+    void ReadRelease(size_t read);
 
 #if __cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
     /**
@@ -132,7 +132,7 @@ template <typename T, size_t size> class BipartiteBuf {
      * @param[in] Span of the linear space
      * @retval None
      */
-    void ReadRelease(const std::span<T> read);
+    void ReadRelease(std::span<T> read);
 #endif
 
     /********************* PRIVATE METHODS ************************/
