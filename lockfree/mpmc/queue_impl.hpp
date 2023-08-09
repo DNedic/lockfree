@@ -3,8 +3,8 @@
  * @brief A queue implementation written in standard c++11
  * suitable for both low-end microcontrollers all the way
  * to HPC machines. Lock-free for all scenarios.
- * @version	2.0.3
- * @date 17. July 2023
+ * @version	2.0.4
+ * @date 10. August 2023
  * @author Djordje Nedic
  **************************************************************/
 
@@ -36,7 +36,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v2.0.3
+ * Version:         v2.0.4
  **************************************************************/
 
 /********************** PUBLIC METHODS ************************/

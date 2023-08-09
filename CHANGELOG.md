@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.4
+
+- Added the ability to configure the library through CMake
+
 ## 2.0.3
 
 - Fixed MSVC C++ language standard detection
