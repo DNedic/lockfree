@@ -37,7 +37,7 @@ There are three main ways to get the library:
 * By downloading a release from GitHub
 
 ## Configuration
-`lockfree` uses cacheline alignment for indexes to avoid the [False Sharing](https://en.wikipedia.org/wiki/False_sharing) phenomenom by default, avoiding the performance loss of cacheline invalidation  on cache coherent systems.  This aligns the indexes to ```LOCKFREE_CACHELINE_LENGTH```, ```64``` by default.
+`lockfree` uses cacheline alignment for indexes to avoid the [False Sharing](https://en.wikipedia.org/wiki/False_sharing) phenomenon by default, avoiding the performance loss of cacheline invalidation  on cache coherent systems.  This aligns the indexes to ```LOCKFREE_CACHELINE_LENGTH```, ```64``` by default.
 
 On embedded systems, ```LOCKFREE_CACHE_COHERENT``` should almost always be set as ```false``` to avoid wasting memory.
 
@@ -46,15 +46,15 @@ Additionally, some systems have a non-typical cacheline length (for instance the
 ## FAQ
 ### Why would I use this over locking data structures on a hosted machine?
 
-The biggest reason you would want to use a lockfree data structure on hosted environments would be avoiding issues surrounding locking such as deadlocks, priority inversion and nondeterministic access latency. When used properly, lock-free data structures can also improve performance in some scenarios.
+The biggest reason you would want to use a lock-free data structure on hosted environments would be avoiding issues surrounding locking such as deadlocks, priority inversion and nondeterministic access latency. When used properly, lock-free data structures can also improve performance in some scenarios.
 
-Additionally, `lockfree` provides a way to build applications and libraries that can be compiled to work on both POSIX and non-POSIX environments without `#idfef`s or polymorphism.
+Additionally, `lockfree` provides a way to build applications and libraries that can be compiled to work on both POSIX and non-POSIX environments without `#ifdef`s or polymorphism.
 
 ### Why use this over RTOS-provided IPC mechanisms on an embedded system?
 
 While locking usually isn't expensive on embedded systems such as microcontrollers, there is a wide variety of RTOS-es and no standardized API for locking. The fact that multiple architectures are present from 8051 to RISC-V means that architecture-specific locking methods are not standardized either.
 
-`lockfree` provides a way to build portable embedded code with a neglegible performance cost as opposed to locking, code using `lockfree` can be compiled to run on any embedded platform supporting C++11. Additionally, the code can easily be tested on a host machine without the need for mocking.
+`lockfree` provides a way to build portable embedded code with a negligible performance cost as opposed to locking, code using `lockfree` can be compiled to run on any embedded platform supporting C++11. Additionally, the code can easily be tested on a host machine without the need for mocking.
 
 ### What advantages does using C++ over C provide for the library?
 * Type safety, as data structures are type and size templated
@@ -63,7 +63,7 @@ While locking usually isn't expensive on embedded systems such as microcontrolle
 * Encapsulation, the data buffer is a class member instead of being passed by a pointer
 
 ### What is the formal classification of the data structures in `lockfree`?
-All structures in `lockfree` are **bounded**, **array-based** and **lockfree**, spsc data structures are also **waitfree** and **termination safe**. 
+All structures in `lockfree` are **bounded**, **array-based** and **lock-free**, spsc data structures are also **waitfree** and **termination safe**. 
 
 ## Theory and references
 For more insight into lock-free programming, take a look at:
