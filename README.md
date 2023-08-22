@@ -46,9 +46,9 @@ Additionally, some systems have a non-typical cacheline length (for instance the
 ## FAQ
 ### Why would I use this over locking data structures on a hosted machine?
 
-The biggest reason you would want to use a lockfree data structure in such a scenario would be performance. Locking has a non-neglegible runtime cost on hosted systems as every lock requires a syscall.
+The biggest reason you would want to use a lockfree data structure on hosted environments would be avoiding issues surrounding locking such as deadlocks, priority inversion and nondeterministic access latency. When used properly, lock-free data structures can also improve performance in some scenarios.
 
-Additional benefits would be performance from cache locality as lockfree data structures are array-based or code portability to non-POSIX environments.
+Additionally, `lockfree` provides a way to build applications and libraries that can be compiled to work on both POSIX and non-POSIX environments without `#idfef`s or polymorphism.
 
 ### Why use this over RTOS-provided IPC mechanisms on an embedded system?
 
