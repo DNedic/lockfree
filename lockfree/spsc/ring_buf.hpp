@@ -200,10 +200,10 @@ template <typename T, size_t size> class RingBuf {
 
 /************************** INCLUDE ***************************/
 
-/* Include the implementation */
-#include "ring_buf_impl.hpp"
-
 } /* namespace spsc */
 } /* namespace lockfree */
+
+/* Include the implementation */
+#include "ring_buf_impl.hpp"
 
 #endif /* LOCKFREE_RING_BUF_HPP */

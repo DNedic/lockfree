@@ -42,6 +42,9 @@
 
 /********************** PUBLIC METHODS ************************/
 
+namespace lockfree {
+namespace spsc {
+
 template <typename T, size_t size>
 RingBuf<T, size>::RingBuf() : _r(0U), _w(0U) {}
 
@@ -237,3 +240,6 @@ size_t RingBuf<T, size>::CalcAvailable(const size_t w, const size_t r) {
         return size - (r - w);
     }
 }
+
+} /* namespace spsc */
+} /* namespace lockfree */

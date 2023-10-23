@@ -46,6 +46,9 @@
 
 /********************** PUBLIC METHODS ************************/
 
+namespace lockfree {
+namespace spsc {
+
 template <typename T, size_t size, size_t priority_count>
 bool PriorityQueue<T, size, priority_count>::Push(const T &element,
                                                   const size_t priority) {
@@ -81,3 +84,6 @@ std::optional<T> PriorityQueue<T, size, priority_count>::PopOptional() {
     }
 }
 #endif
+
+} /* namespace spsc */
+} /* namespace lockfree */

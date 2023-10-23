@@ -42,6 +42,9 @@
 
 /********************** PUBLIC METHODS ************************/
 
+namespace lockfree {
+namespace spsc {
+
 template <typename T, size_t size> Queue<T, size>::Queue() : _r(0U), _w(0U) {}
 
 template <typename T, size_t size> bool Queue<T, size>::Push(const T &element) {
@@ -107,3 +110,6 @@ std::optional<T> Queue<T, size>::PopOptional() {
     }
 }
 #endif
+
+} /* namespace spsc */
+} /* namespace lockfree */
