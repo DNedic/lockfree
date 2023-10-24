@@ -41,6 +41,9 @@
 
 /********************** PUBLIC METHODS ************************/
 
+namespace lockfree {
+namespace mpmc {
+
 template <typename T, size_t size>
 Queue<T, size>::Queue() : _r_count(0U), _w_count(0U) {}
 
@@ -124,3 +127,6 @@ std::optional<T> Queue<T, size>::PopOptional() {
     }
 }
 #endif
+
+} /* namespace mpmc */
+} /* namespace lockfree */

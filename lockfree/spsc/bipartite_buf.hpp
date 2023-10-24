@@ -157,12 +157,14 @@ template <typename T, size_t size> class BipartiteBuf {
     bool _read_wrapped;  /**< Read wrapped flag, used only in the consumer */
 };
 
+} /* namespace spsc */
+} /* namespace lockfree */
+
 /************************** INCLUDE ***************************/
 
 /* Include the implementation */
 #include "bipartite_buf_impl.hpp"
 
-} /* namespace spsc */
-} /* namespace lockfree */
+
 
 #endif /* LOCKFREE_BIPARTITE_BUF_HPP */

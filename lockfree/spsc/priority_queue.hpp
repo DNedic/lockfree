@@ -97,10 +97,10 @@ template <typename T, size_t size, size_t priority_count> class PriorityQueue {
 
 /************************** INCLUDE ***************************/
 
-/* Include the implementation */
-#include "priority_queue_impl.hpp"
-
 } /* namespace spsc */
 } /* namespace lockfree */
+
+/* Include the implementation */
+#include "priority_queue_impl.hpp"
 
 #endif /* LOCKFREE_PRIORITY_QUEUE_HPP */

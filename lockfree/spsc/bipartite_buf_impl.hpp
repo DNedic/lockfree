@@ -47,6 +47,9 @@
 
 /********************** PUBLIC METHODS ************************/
 
+namespace lockfree {
+namespace spsc {
+
 template <typename T, size_t size>
 BipartiteBuf<T, size>::BipartiteBuf()
     : _r(0U), _w(0U), _i(0U), _write_wrapped(false), _read_wrapped(false) {}
@@ -199,3 +202,6 @@ size_t BipartiteBuf<T, size>::CalcFree(const size_t w, const size_t r) {
         return (size - (w - r)) - 1U;
     }
 }
+
+} /* namespace spsc */
+} /* namespace lockfree */

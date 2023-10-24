@@ -111,10 +111,10 @@ template <typename T, size_t size> class Queue {
 
 /************************** INCLUDE ***************************/
 
-/* Include the implementation */
-#include "queue_impl.hpp"
-
 } /* namespace mpmc */
 } /* namespace lockfree */
+
+/* Include the implementation */
+#include "queue_impl.hpp"
 
 #endif /* LOCKFREE_MPMC_QUEUE_HPP */
