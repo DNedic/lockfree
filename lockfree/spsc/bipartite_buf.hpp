@@ -165,6 +165,4 @@ template <typename T, size_t size> class BipartiteBuf {
 /* Include the implementation */
 #include "bipartite_buf_impl.hpp"
 
-
-
 #endif /* LOCKFREE_BIPARTITE_BUF_HPP */

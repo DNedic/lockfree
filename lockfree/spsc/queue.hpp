@@ -102,10 +102,10 @@ template <typename T, size_t size> class Queue {
 #endif
 };
 
-/************************** INCLUDE ***************************/
-
 } /* namespace spsc */
 } /* namespace lockfree */
+
+/************************** INCLUDE ***************************/
 
 /* Include the implementation */
 #include "queue_impl.hpp"

@@ -94,10 +94,10 @@ template <typename T, size_t size, size_t priority_count> class PriorityQueue {
     Queue<T, size> _subqueue[priority_count];
 };
 
-/************************** INCLUDE ***************************/
-
 } /* namespace mpmc */
 } /* namespace lockfree */
+
+/************************** INCLUDE ***************************/
 
 /* Include the implementation */
 #include "priority_queue_impl.hpp"

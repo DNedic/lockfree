@@ -40,10 +40,9 @@
  * Version:         v2.0.4
  **************************************************************/
 
-/********************** PUBLIC METHODS ************************/
-
 namespace lockfree {
 namespace spsc {
+/********************** PUBLIC METHODS ************************/
 
 template <typename T, size_t size> Queue<T, size>::Queue() : _r(0U), _w(0U) {}
 

@@ -43,10 +43,9 @@
 
 #include <cassert>
 
-/********************** PUBLIC METHODS ************************/
-
 namespace lockfree {
 namespace mpmc {
+/********************** PUBLIC METHODS ************************/
 
 template <typename T, size_t size, size_t priority_count>
 bool PriorityQueue<T, size, priority_count>::Push(const T &element,

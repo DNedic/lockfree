@@ -45,10 +45,9 @@
 #include <algorithm>
 #include <cassert>
 
-/********************** PUBLIC METHODS ************************/
-
 namespace lockfree {
 namespace spsc {
+/********************** PUBLIC METHODS ************************/
 
 template <typename T, size_t size>
 BipartiteBuf<T, size>::BipartiteBuf()
