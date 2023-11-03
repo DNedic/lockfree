@@ -38,7 +38,7 @@ TEST_CASE("Get free after a wrapping write", "[rb_get_free_wrapped]") {
     rb.Skip(sizeof(test_data) / sizeof(test_data[0]));
 
     const float test_data2[900] = {3.1416F};
-    rb.Write(test_data, sizeof(test_data2) / sizeof(test_data2[0]));
+    rb.Write(test_data2, sizeof(test_data2) / sizeof(test_data2[0]));
 
     /* After a wrapping write */
     REQUIRE(rb.GetFree() ==
@@ -78,8 +78,8 @@ TEST_CASE("Get available after a wrapping write",
 
     rb.Skip(sizeof(test_data) / sizeof(test_data[0]));
 
-    const float test_data2[900] = {3.1416F};
-    rb.Write(test_data, sizeof(test_data2) / sizeof(test_data2[0]));
+    const double test_data2[900] = {3.1416F};
+    rb.Write(test_data2, sizeof(test_data2) / sizeof(test_data2[0]));
 
     /* After a wrapping write */
     REQUIRE(rb.GetAvailable() == sizeof(test_data2) / sizeof(test_data2[0]));
