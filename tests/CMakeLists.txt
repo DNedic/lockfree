@@ -25,6 +25,21 @@ add_executable(tests
 # Required in order to test the std::span API as well
 target_compile_features(tests PRIVATE cxx_std_20)
 
+target_compile_options(tests
+PRIVATE
+    -fno-omit-frame-pointer # For nicer stack traces with sanitizers
+    -fsanitize=address
+    -fsanitize=signed-integer-overflow
+    -fsanitize=bounds
+)
+
+target_link_options(tests
+PRIVATE
+    -fsanitize=address
+    -fsanitize=signed-integer-overflow
+    -fsanitize=bounds
+)
+
 target_link_libraries(tests
 PRIVATE
     ${PROJECT_NAME}
