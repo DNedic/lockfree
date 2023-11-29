@@ -25,5 +25,6 @@ endif()
 # Only build tests if we're actually working on the library,
 # not when the library is being used in a project
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    enable_testing()
     add_subdirectory(tests)
 endif()
