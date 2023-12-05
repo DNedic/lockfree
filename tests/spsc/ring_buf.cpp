@@ -1,6 +1,6 @@
 #include <algorithm>
-#include <thread>
 #include <catch2/catch_test_macros.hpp>
+#include <thread>
 
 #include "lockfree.hpp"
 
@@ -332,23 +332,24 @@ TEST_CASE("Multithreaded read/write", "[rb_multi]") {
 
     // consumer
     threads.emplace_back([&]() {
-        bool read_success = false;
         uint64_t data[1] = {0};
         do {
-            read_success = rb.Read(data, 1);
+            bool read_success = rb.Read(data, 1);
             if (read_success) {
                 read.push_back(data[0]);
             }
-        } while (!read_success || data[0] < 2047);
+        } while (data[0] < 2047);
     });
     // producer
     threads.emplace_back([&]() {
-        uint64_t data[1] = {0};
-        for (uint64_t idx = 0; idx < 2048; idx++) {
-            data[0] = idx;
-            written.push_back(idx);
-            rb.Write(data, 1);
-        }
+        uint64_t cnt = 0;
+        do {
+            bool write_success = rb.Write(&cnt, 1);
+            if (write_success) {
+                written.push_back(cnt);
+                cnt++;
+            }
+        } while (cnt < 2048);
     });
     for (auto &t : threads) {
         t.join();
