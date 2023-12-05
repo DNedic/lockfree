@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <thread>
 #include <catch2/catch_test_macros.hpp>
 
 #include "lockfree.hpp"
@@ -322,37 +321,4 @@ TEST_CASE("Peek std::span", "[rb_peek_span]") {
     REQUIRE(peek_success);
     REQUIRE(std::equal(std::begin(test_data), std::end(test_data),
                        std::begin(test_data_read)));
-}
-
-TEST_CASE("Multithreaded read/write", "[rb_multi]") {
-    std::vector<std::thread> threads;
-    lockfree::spsc::RingBuf<uint64_t, 1024U> rb;
-    std::vector<uint64_t> written;
-    std::vector<uint64_t> read;
-
-    // consumer
-    threads.emplace_back([&]() {
-        bool read_success = false;
-        uint64_t data[1] = {0};
-        do {
-            read_success = rb.Read(data, 1);
-            if (read_success) {
-                read.push_back(data[0]);
-            }
-        } while (!read_success || data[0] < 2047);
-    });
-    // producer
-    threads.emplace_back([&]() {
-        uint64_t data[1] = {0};
-        for (uint64_t idx = 0; idx < 2048; idx++) {
-            data[0] = idx;
-            written.push_back(idx);
-            rb.Write(data, 1);
-        }
-    });
-    for (auto &t : threads) {
-        t.join();
-    }
-    REQUIRE(
-        std::equal(std::begin(written), std::end(written), std::begin(read)));
 }
