@@ -68,7 +68,7 @@ template <typename T, size_t size> class BipartiteBuf {
      * @brief Acquires a linear region in the bipartite buffer for writing
      * Should only be called from the producer thread.
      * @param[in] Free linear space in the buffer required
-     * @retval Pointer to the beginning of the linear space
+     * @retval Pointer to the beginning of the linear space, nullptr if no space
      */
     T *WriteAcquire(size_t free_required);
 
