@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <math.h>
+#include <thread>
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -86,4 +87,41 @@ TEST_CASE("Optional API", "[q_optional_api]") {
     queue.Push(-1024);
 
     REQUIRE(queue.PopOptional() == -1024);
+}
+
+TEST_CASE("Multithreaded read/write", "[q_multithread]") {
+    std::vector<std::thread> threads;
+    lockfree::spsc::Queue<uint64_t, 1024U> queue;
+    std::vector<uint64_t> written;
+    std::vector<uint64_t> read;
+
+    // consumer
+    threads.emplace_back([&]() {
+        uint64_t element = 0;
+        do {
+            bool read_success = queue.Pop(element);
+            if (read_success) {
+                read.push_back(element);
+            }
+        } while (element < TEST_MT_TRANSFER_CNT);
+    });
+
+    // producer
+    threads.emplace_back([&]() {
+        uint64_t element = 0;
+        do {
+            bool push_success = queue.Push(element);
+            if (push_success) {
+                written.push_back(element);
+                element++;
+            }
+        } while (element < TEST_MT_TRANSFER_CNT + 1);
+    });
+
+    for (auto &t : threads) {
+        t.join();
+    }
+
+    REQUIRE(
+        std::equal(std::begin(written), std::end(written), std::begin(read)));
 }

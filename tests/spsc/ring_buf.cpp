@@ -324,7 +324,7 @@ TEST_CASE("Peek std::span", "[rb_peek_span]") {
                        std::begin(test_data_read)));
 }
 
-TEST_CASE("Multithreaded read/write", "[rb_multi]") {
+TEST_CASE("Multithreaded read/write", "[rb_multithread]") {
     std::vector<std::thread> threads;
     lockfree::spsc::RingBuf<uint64_t, 1024U> rb;
     std::vector<uint64_t> written;
@@ -338,7 +338,7 @@ TEST_CASE("Multithreaded read/write", "[rb_multi]") {
             if (read_success) {
                 read.push_back(data[0]);
             }
-        } while (data[0] < 2047);
+        } while (data[0] < TEST_MT_TRANSFER_CNT);
     });
     // producer
     threads.emplace_back([&]() {
@@ -349,11 +349,57 @@ TEST_CASE("Multithreaded read/write", "[rb_multi]") {
                 written.push_back(cnt);
                 cnt++;
             }
-        } while (cnt < 2048);
+        } while (cnt < TEST_MT_TRANSFER_CNT + 1);
     });
     for (auto &t : threads) {
         t.join();
     }
+    REQUIRE(
+        std::equal(std::begin(written), std::end(written), std::begin(read)));
+}
+
+TEST_CASE("Multithreaded read/write multiple", "[rb_multithread_multiple]") {
+    std::vector<std::thread> threads;
+    lockfree::spsc::RingBuf<unsigned int, 1024U> rb;
+    std::vector<unsigned int> written;
+    std::vector<unsigned int> read;
+
+    const size_t data_size = 59; // Intentionally a prime number
+
+    // consumer
+    threads.emplace_back([&]() {
+        unsigned int data[data_size] = {0};
+        size_t read_count = 0;
+        do {
+            bool read_success = rb.Read(data, data_size);
+            if (read_success) {
+                read.insert(read.end(), &data[0], &data[data_size]);
+                read_count += data_size;
+            }
+        } while (read_count < TEST_MT_TRANSFER_CNT);
+    });
+
+    // producer
+    threads.emplace_back([&]() {
+        unsigned int data[data_size] = {0};
+        for (unsigned int i = 0; i < data_size; i++) {
+            data[i] = rand();
+        }
+
+        size_t write_count = 0;
+        do {
+            bool write_success = rb.Write(data, data_size);
+            if (write_success) {
+                written.insert(written.end(), &data[0], &data[data_size]);
+                write_count += data_size;
+            }
+        } while (write_count < TEST_MT_TRANSFER_CNT);
+    });
+
+    for (auto &t : threads) {
+        t.join();
+    }
+
     REQUIRE(
         std::equal(std::begin(written), std::end(written), std::begin(read)));
 }
