@@ -60,7 +60,7 @@ T *BipartiteBuf<T, size>::WriteAcquire(const size_t free_required) {
     const size_t r = _r.load(std::memory_order_acquire);
 
     const size_t free = CalcFree(w, r);
-    const size_t linear_space = size - r;
+    const size_t linear_space = size - w;
     const size_t linear_free = std::min(free, linear_space);
 
     /* Try to find enough linear space until the end of the buffer */
