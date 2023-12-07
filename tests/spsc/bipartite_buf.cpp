@@ -243,7 +243,6 @@ TEST_CASE("Multithreaded read/write multiple", "[bb_multithread_multiple]") {
     std::vector<unsigned int> read;
 
     const size_t data_size = 59; // Intentionally a prime number
-    const size_t elements_to_transfer = 2048;
 
     // consumer
     threads.emplace_back([&]() {
@@ -256,7 +255,7 @@ TEST_CASE("Multithreaded read/write multiple", "[bb_multithread_multiple]") {
                 bb.ReadRelease(read_region.second);
                 read_count += read_region.second;
             }
-        } while (read_count < elements_to_transfer);
+        } while (read_count < TEST_MT_TRANSFER_CNT);
     });
 
     // producer
@@ -275,7 +274,7 @@ TEST_CASE("Multithreaded read/write multiple", "[bb_multithread_multiple]") {
                 written.insert(written.end(), &data[0], &data[data_size]);
                 write_count += data_size;
             }
-        } while (write_count < elements_to_transfer);
+        } while (write_count < TEST_MT_TRANSFER_CNT);
     });
 
     for (auto &t : threads) {

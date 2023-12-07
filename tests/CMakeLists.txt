@@ -22,6 +22,12 @@ add_executable(tests
     mpmc/priority_queue.cpp
 )
 
+if (NOT DEFINED TEST_MT_TRANSFER_CNT)
+    set(TEST_MT_TRANSFER_CNT 10240)
+endif()
+
+target_compile_definitions(tests PRIVATE TEST_MT_TRANSFER_CNT=${TEST_MT_TRANSFER_CNT})
+
 # Required in order to test the std::span API as well
 target_compile_features(tests PRIVATE cxx_std_20)
 

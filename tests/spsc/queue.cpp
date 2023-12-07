@@ -103,7 +103,7 @@ TEST_CASE("Multithreaded read/write", "[q_multithread]") {
             if (read_success) {
                 read.push_back(element);
             }
-        } while (element < 2047);
+        } while (element < TEST_MT_TRANSFER_CNT);
     });
 
     // producer
@@ -115,7 +115,7 @@ TEST_CASE("Multithreaded read/write", "[q_multithread]") {
                 written.push_back(element);
                 element++;
             }
-        } while (element < 2048);
+        } while (element < TEST_MT_TRANSFER_CNT + 1);
     });
 
     for (auto &t : threads) {

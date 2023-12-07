@@ -338,7 +338,7 @@ TEST_CASE("Multithreaded read/write", "[rb_multithread]") {
             if (read_success) {
                 read.push_back(data[0]);
             }
-        } while (data[0] < 2047);
+        } while (data[0] < TEST_MT_TRANSFER_CNT);
     });
     // producer
     threads.emplace_back([&]() {
@@ -349,7 +349,7 @@ TEST_CASE("Multithreaded read/write", "[rb_multithread]") {
                 written.push_back(cnt);
                 cnt++;
             }
-        } while (cnt < 2048);
+        } while (cnt < TEST_MT_TRANSFER_CNT + 1);
     });
     for (auto &t : threads) {
         t.join();
@@ -365,7 +365,6 @@ TEST_CASE("Multithreaded read/write multiple", "[rb_multithread_multiple]") {
     std::vector<unsigned int> read;
 
     const size_t data_size = 59; // Intentionally a prime number
-    const size_t elements_to_transfer = 2048;
 
     // consumer
     threads.emplace_back([&]() {
@@ -377,7 +376,7 @@ TEST_CASE("Multithreaded read/write multiple", "[rb_multithread_multiple]") {
                 read.insert(read.end(), &data[0], &data[data_size]);
                 read_count += data_size;
             }
-        } while (read_count < elements_to_transfer);
+        } while (read_count < TEST_MT_TRANSFER_CNT);
     });
 
     // producer
@@ -394,7 +393,7 @@ TEST_CASE("Multithreaded read/write multiple", "[rb_multithread_multiple]") {
                 written.insert(written.end(), &data[0], &data[data_size]);
                 write_count += data_size;
             }
-        } while (write_count < elements_to_transfer);
+        } while (write_count < TEST_MT_TRANSFER_CNT);
     });
 
     for (auto &t : threads) {
