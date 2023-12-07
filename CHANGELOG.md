@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.5
+
+- A linear space calculation bug in the [Bipartite Buffer](docs/spsc/bipartite_buf.md) that could cause data corruption in builds without asserts enabled was fixed
+
 ## 2.0.4
 
 - Added the ability to configure the library through CMake
