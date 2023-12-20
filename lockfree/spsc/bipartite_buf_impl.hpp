@@ -141,13 +141,13 @@ std::pair<T *, size_t> BipartiteBuf<T, size>::ReadAcquire() {
 
 template <typename T, size_t size>
 void BipartiteBuf<T, size>::ReadRelease(const size_t read) {
-    /* Preload variables with adequate memory ordering */
-    size_t r = _r.load(std::memory_order_relaxed);
-
     /* If the read wrapped, overflow the read index */
+    size_t r;
     if (_read_wrapped) {
         _read_wrapped = false;
         r = 0U;
+    } else {
+        r = _r.load(std::memory_order_relaxed);
     }
 
     /* Increment the read index and wrap to 0 if needed */
