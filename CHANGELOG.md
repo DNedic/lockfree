@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.6
+- Added a performance optimization in the [Bipartite Buffer](docs/spsc/bipartite_buf.md), where the atomic read index load can be avoided after reading wraps
+
 ## 2.0.5
 
 - A linear space calculation bug in the [Bipartite Buffer](docs/spsc/bipartite_buf.md) that could cause data corruption in builds without asserts enabled was fixed

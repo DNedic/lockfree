@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(lockfree
-    VERSION 2.0.5
+    VERSION 2.0.6
     LANGUAGES CXX
 )
 
