@@ -73,7 +73,20 @@ TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
     std::vector<uint64_t> written;
     std::vector<uint64_t> read;
 
-    // consumer
+    /* The following code pushes a large number of values into a priority
+       queue using four different priorities. The priority is also encoded
+       into the value pushed, as its two lower significance bits.
+       
+       Both consumer and producer store in two vectors the numbers written
+       and read.
+
+       After the multi-threaded execution, special code (described in detail
+       below) checks no higher priority value was written to the priority
+       queue at the time a lower priority one was read.
+    */
+
+    // consumer, it just pops values from the queue and stores them in the
+    // main thread vector
     threads.emplace_back([&]() {
         uint64_t value = 0;
         uint64_t cnt = 0;
@@ -86,7 +99,8 @@ TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
         } while (cnt < TEST_MT_TRANSFER_CNT);
     });
 
-    // producer
+    // producer, uses alternative priorities and pushes a counter shifted to
+    // accommodate the priority on its lower bits.
     threads.emplace_back([&]() {
         uint64_t cnt = 0;
         uint64_t value = 0;
@@ -96,7 +110,7 @@ TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
           bool push_success = queue.Push(value, prio);
           if (push_success) {
             written.push_back(value);
-            prio = (prio + 1) % 4;
+            prio = (prio + 1) % 4; // this could be also randomly generated
             cnt++;
           }
         } while (cnt < TEST_MT_TRANSFER_CNT + 1);
@@ -104,40 +118,49 @@ TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
     for (auto &t : threads) {
         t.join();
     }
-    // check at all times no higher value is present in the `written` vector
+    /* The following code checks that at all times no higher priority value was
+       present in the `written` vector.
+
+       It needs to keep track which values were already read, it does that with
+       the help of the `consumed` Boolean vector.
+
+       As an optimization, the variable `start` contains the longest prefix of
+       `consumed` that is all true.
+    */
     std::vector<bool> consumed(written.size(), false);    
     uint64_t value1, value2;
     uint8_t prio1, prio2;
     size_t start = 0;
     bool all_consumed;
+    bool found;
     for(size_t idx=0; idx<read.size(); idx++) {
       // the value was read
       value1 = read[idx];
+      // extract the priority encoded in the value
       prio1 = value1 & ((1<<2) - 1);
 
-      all_consumed = true;
+      all_consumed = true; // used for the `start` optimization
+      found = false;
       for(size_t idx2=start; idx2<written.size(); idx2++) {
-        if(consumed[idx2]) {
+        if(consumed[idx2]) { // consumed values are skipped
           if(all_consumed){
-            start++;
+            start++; // keep track of the `consumed` prefix of all true.
           }
           continue;
         }
         all_consumed = false;
         // find when the value was written
+        value2 = written[idx2];
+        prio2 = value2 & ((1<<2) - 1);
         if(written[idx2] == value1) {
-            consumed[idx2] = true;
-            for(size_t idx3=start; idx3 < idx2; idx3++) {
-              if(consumed[idx3]) {
-                continue;
-              }
-              value2 = written[idx3];
-              prio2 = value2 & ((1<<2) - 1);
-              REQUIRE(prio2 <= prio1);
-            }
+            consumed[idx2] = true; // this value is now accounted for
+            found = true;
             break;
+        } else { // intermediate value, should be lower priority
+            REQUIRE(prio2 <= prio1);
         }
       }
+      REQUIRE(found);
     }
 }
 
