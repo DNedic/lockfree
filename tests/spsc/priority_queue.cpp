@@ -123,15 +123,10 @@ TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
 
        It needs to keep track which values were already read, it does that with
        the help of the `consumed` Boolean vector.
-
-       As an optimization, the variable `start` contains the longest prefix of
-       `consumed` that is all true.
     */
     std::vector<bool> consumed(written.size(), false);    
     uint64_t value1, value2;
     uint8_t prio1, prio2;
-    size_t start = 0;
-    bool all_consumed;
     bool found;
     for(size_t idx=0; idx<read.size(); idx++) {
       // the value was read
@@ -139,16 +134,11 @@ TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
       // extract the priority encoded in the value
       prio1 = value1 & ((1<<2) - 1);
 
-      all_consumed = true; // used for the `start` optimization
       found = false;
-      for(size_t idx2=start; idx2<written.size(); idx2++) {
+      for(size_t idx2=0; idx2<written.size(); idx2++) {
         if(consumed[idx2]) { // consumed values are skipped
-          if(all_consumed){
-            start++; // keep track of the `consumed` prefix of all true.
-          }
           continue;
         }
-        all_consumed = false;
         // find when the value was written
         value2 = written[idx2];
         prio2 = value2 & ((1<<2) - 1);
