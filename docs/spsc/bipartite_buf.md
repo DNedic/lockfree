@@ -120,6 +120,8 @@ Lastly, when writing, we can write over invalidated parts of the buffer as it do
     <img src="images/bipartite_buf_unwrapped_after_invalidate_write.svg" width=80%>
 </p>
 
+For more details, [here](https://www.codeproject.com/Articles/3479/The-Bip-Buffer-The-Circular-Buffer-with-a-Twist) is a nice writeup about Bipartite Buffers.
+
 ## Dealing with caches on embedded systems
 When using the library with DMA or asymmetric multicore on embedded systems with cache it is necessary to perform manual cache synchronization in one of the following ways:
 * Using platform specific data synchronization barriers (```DSB``` on ARM)
