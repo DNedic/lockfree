@@ -3,8 +3,8 @@
 ## When to use the Bipartite Buffer
 A bipartite buffer should be used everywhere the Ring Buffer is used if you want:
 * To offload transfers to DMA increasing the transfer speed and freeing up CPU time
-* To avoid creating intermediate buffers for APIs that require contigous data
-* To process data inside the buffer without dequeing it
+* To avoid creating intermediate buffers for APIs that require contiguous data
+* To process data inside the buffer without dequeueing it
 * When operations on data can fail or only some of the data is used
 
 > Note: At the moment, the Bipartite Buffer is only meant to be used for [trivial](https://en.cppreference.com/w/cpp/language/classes#Trivial_class) types.
