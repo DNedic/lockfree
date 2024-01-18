@@ -6,7 +6,6 @@
 
 TEST_CASE("Get free with an empty buffer", "[rb_get_free_empty]") {
     lockfree::spsc::RingBuf<float, 1024U> const rb;
-    const float test_data[120] = {2.71828F};
 
     REQUIRE(rb.GetFree() == 1024U - 1U);
 }
@@ -308,6 +307,36 @@ TEST_CASE("Peek std::array", "[rb_peek_std_array]") {
     REQUIRE(read_success);
     REQUIRE(
         std::equal(test_data.begin(), test_data.end(), test_data_read.begin()));
+}
+
+TEST_CASE("Get available after clear", "[rb_get_available_after_clear]") {
+    lockfree::spsc::RingBuf<uint64_t, 1024U> rb;
+    const std::array<uint64_t, 512> test_data = {0xE5U};
+
+    rb.Write(test_data);
+    rb.Clear();
+
+    REQUIRE(rb.GetAvailable() == 0);
+}
+
+TEST_CASE("Get free after clear", "[rb_get_free_after_clear]") {
+    lockfree::spsc::RingBuf<uint64_t, 1024U> rb;
+    const std::array<uint64_t, 512> test_data = {0xE5U};
+
+    rb.Write(test_data);
+    rb.Clear();
+
+    REQUIRE(rb.GetFree() == 1024U -1U);
+}
+
+TEST_CASE("Try to read after clear", "[rb_read_clear]") {
+    lockfree::spsc::RingBuf<uint64_t, 512U> rb;
+
+    uint64_t test_data_read[320] = {0};
+    bool const read_success = rb.Read(
+        test_data_read, sizeof(test_data_read) / sizeof(test_data_read[0]));
+
+    REQUIRE(!read_success);
 }
 
 TEST_CASE("Peek std::span", "[rb_peek_span]") {

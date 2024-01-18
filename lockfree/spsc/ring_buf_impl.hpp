@@ -44,6 +44,12 @@ namespace spsc {
 template <typename T, size_t size>
 RingBuf<T, size>::RingBuf() : _r(0U), _w(0U) {}
 
+template<typename T, size_t size>
+void RingBuf<T, size>::Clear() {
+    _r = 0;
+    _w = 0;
+}
+
 template <typename T, size_t size>
 bool RingBuf<T, size>::Write(const T *data, const size_t cnt) {
     /* Preload variables with adequate memory ordering */
