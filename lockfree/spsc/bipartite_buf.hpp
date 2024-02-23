@@ -138,7 +138,9 @@ template <typename T, size_t size> class BipartiteBuf {
 
     /********************** PRIVATE MEMBERS ***********************/
   private:
-    T _data[size]; /**< Data array */
+    T _data[size];       /**< Data array */
+    bool _write_wrapped; /**< Write wrapped flag, used only in the producer */
+    bool _read_wrapped;  /**< Read wrapped flag, used only in the consumer */
 #if LOCKFREE_CACHE_COHERENT
     alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _r; /**< Read index */
     alignas(
@@ -150,8 +152,6 @@ template <typename T, size_t size> class BipartiteBuf {
     std::atomic_size_t _w; /**< Write index */
     std::atomic_size_t _i; /**< Invalidated space index */
 #endif
-    bool _write_wrapped; /**< Write wrapped flag, used only in the producer */
-    bool _read_wrapped;  /**< Read wrapped flag, used only in the consumer */
 };
 
 } /* namespace spsc */
