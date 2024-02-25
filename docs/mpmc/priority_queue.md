@@ -3,8 +3,6 @@
 ## When to use the Priority Queue
 The Priority Queue should be used when there are distinct priorities between elements to be enqueued, for instance different urgency signals between threads or packets of different priorities.
 
-> Note: At the moment, the Queue is only meant to be used for [trivial](https://en.cppreference.com/w/cpp/language/classes#Trivial_class) types.
-
 ## How to use
 Shown here is an example of typical use:
 * Initialization

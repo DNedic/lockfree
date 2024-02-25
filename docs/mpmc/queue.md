@@ -3,8 +3,6 @@
 ## When to use the Queue
 The Queue is the simplest data structure in the library, and it should be used when single element operations are dominant. It has the simplest API and lowest overhead per operation.
 
-> Note: At the moment, the Queue is only meant to be used for [trivial](https://en.cppreference.com/w/cpp/language/classes#Trivial_class) types.
-
 ## How to use
 Shown here is an example of typical use:
 * Initialization
