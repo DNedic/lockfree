@@ -33,7 +33,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v2.0.6
+ * Version:         v2.0.7
  **************************************************************/
 
 #ifndef LOCKFREE_HPP

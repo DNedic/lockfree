@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.7
+- Fixed an omission where the invalidate index of the [Bipartite Buffer](docs/spsc/bipartite_buf.md) was sharing a cacheline with wrapping flags, leading to unnecessary performance loss
+
 ## 2.0.6
 - Added a performance optimization in the [Bipartite Buffer](docs/spsc/bipartite_buf.md), where the atomic read index load can be avoided after reading wraps
 
