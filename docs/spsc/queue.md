@@ -36,3 +36,6 @@ if (read) {
     DoStuffWithData(read);
 }
 ```
+
+## How it works
+[Here](https://www.codeproject.com/Articles/43510/Lock-Free-Single-Producer-Single-Consumer-Circular) is a good writeup on how spsc lock-free queues work.
