@@ -135,7 +135,7 @@ TEST_CASE("spsc::PriorityQueue - Multithreaded read/write",
                 found_value = true;
                 break;
             } else { // intermediate value, should be lower priority
-                REQUIRE(written_priority <= read_value);
+                REQUIRE(written_priority <= read_priority);
             }
         }
         REQUIRE(found_value);
