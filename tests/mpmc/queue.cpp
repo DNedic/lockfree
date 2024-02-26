@@ -5,7 +5,8 @@
 
 #include "lockfree.hpp"
 
-TEST_CASE("Write to empty and read back", "[mpmc_q_write_empty]") {
+TEST_CASE("mpmc::Queue - Write to empty and read back",
+          "[mpmc_q_write_empty]") {
     lockfree::mpmc::Queue<int16_t, 20> queue;
 
     bool const push_success = queue.Push(-1024);
@@ -17,7 +18,7 @@ TEST_CASE("Write to empty and read back", "[mpmc_q_write_empty]") {
     REQUIRE(pop_success);
 }
 
-TEST_CASE("Read empty", "[mpmc_q_read_empty]") {
+TEST_CASE("mpmc::Queue - Read empty", "[mpmc_q_read_empty]") {
     lockfree::mpmc::Queue<uint8_t, 20> queue;
 
     uint8_t read = 0;
@@ -25,7 +26,7 @@ TEST_CASE("Read empty", "[mpmc_q_read_empty]") {
     REQUIRE(!pop_success);
 }
 
-TEST_CASE("Write full", "[mpmc_q_write_full]") {
+TEST_CASE("mpmc::Queue - Write full", "[mpmc_q_write_full]") {
     lockfree::mpmc::Queue<uint8_t, 5> queue;
 
     bool push_success = queue.Push(1U);
@@ -37,7 +38,7 @@ TEST_CASE("Write full", "[mpmc_q_write_full]") {
     REQUIRE(!push_success);
 }
 
-TEST_CASE("Write multiple to empty and read back",
+TEST_CASE("mpmc::Queue - Write multiple to empty and read back",
           "[mpmc_q_write_empty_multiple]") {
     lockfree::mpmc::Queue<float, 20> queue;
 
@@ -59,7 +60,7 @@ TEST_CASE("Write multiple to empty and read back",
     REQUIRE(pop_success);
 }
 
-TEST_CASE("Write with overflow and read back from start",
+TEST_CASE("mpmc::Queue - Write with overflow and read back from start",
           "[mpmc_q_write_overflow]") {
     lockfree::mpmc::Queue<int32_t, 4> queue;
 
@@ -81,7 +82,7 @@ TEST_CASE("Write with overflow and read back from start",
     REQUIRE(read == 1000);
 }
 
-TEST_CASE("Optional API", "[mpmc_q_optional_api]") {
+TEST_CASE("mpmc::Queue - Optional API", "[mpmc_q_optional_api]") {
     lockfree::mpmc::Queue<uint64_t, 20> queue;
 
     REQUIRE(!queue.PopOptional());

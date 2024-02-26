@@ -4,14 +4,15 @@
 
 #include "lockfree.hpp"
 
-TEST_CASE("Get free with an empty buffer", "[rb_get_free_empty]") {
+TEST_CASE("spsc::RingBuf - Get free with an empty buffer",
+          "[rb_get_free_empty]") {
     lockfree::spsc::RingBuf<float, 1024U> const rb;
     const float test_data[120] = {2.71828F};
 
     REQUIRE(rb.GetFree() == 1024U - 1U);
 }
 
-TEST_CASE("Get free after a write", "[rb_get_free]") {
+TEST_CASE("spsc::RingBuf - Get free after a write", "[rb_get_free]") {
     lockfree::spsc::RingBuf<float, 1024U> rb;
     const float test_data[120] = {2.71828F};
 
@@ -21,7 +22,8 @@ TEST_CASE("Get free after a write", "[rb_get_free]") {
             1024U - 1U - sizeof(test_data) / sizeof(test_data[0]));
 }
 
-TEST_CASE("Get free when the buffer is full", "[rb_get_free_full]") {
+TEST_CASE("spsc::RingBuf - Get free when the buffer is full",
+          "[rb_get_free_full]") {
     lockfree::spsc::RingBuf<float, 1024U> rb;
     const float test_data[1023] = {2.71828F};
 
@@ -30,7 +32,8 @@ TEST_CASE("Get free when the buffer is full", "[rb_get_free_full]") {
     REQUIRE(rb.GetFree() == 0);
 }
 
-TEST_CASE("Get free after a wrapping write", "[rb_get_free_wrapped]") {
+TEST_CASE("spsc::RingBuf - Get free after a wrapping write",
+          "[rb_get_free_wrapped]") {
     lockfree::spsc::RingBuf<float, 1024U> rb;
     const float test_data[360] = {2.71828F};
 
@@ -46,13 +49,14 @@ TEST_CASE("Get free after a wrapping write", "[rb_get_free_wrapped]") {
             1024U - 1U - sizeof(test_data2) / sizeof(test_data2[0]));
 }
 
-TEST_CASE("Get available with an empty buffer", "[rb_get_available_empty]") {
+TEST_CASE("spsc::RingBuf - Get available with an empty buffer",
+          "[rb_get_available_empty]") {
     lockfree::spsc::RingBuf<double, 1024U> const rb;
 
     REQUIRE(rb.GetAvailable() == 0);
 }
 
-TEST_CASE("Get available after a write", "[rb_get_available]") {
+TEST_CASE("spsc::RingBuf - Get available after a write", "[rb_get_available]") {
     lockfree::spsc::RingBuf<double, 1024U> rb;
     const double test_data[120] = {123.123123};
 
@@ -61,7 +65,8 @@ TEST_CASE("Get available after a write", "[rb_get_available]") {
     REQUIRE(rb.GetAvailable() == sizeof(test_data) / sizeof(test_data[0]));
 }
 
-TEST_CASE("Get available when the buffer is full", "[rb_get_available_full]") {
+TEST_CASE("spsc::RingBuf - Get available when the buffer is full",
+          "[rb_get_available_full]") {
     lockfree::spsc::RingBuf<double, 1024U> rb;
     const double test_data[1023] = {123.123123};
 
@@ -70,7 +75,7 @@ TEST_CASE("Get available when the buffer is full", "[rb_get_available_full]") {
     REQUIRE(rb.GetAvailable() == 1024U - 1U);
 }
 
-TEST_CASE("Get available after a wrapping write",
+TEST_CASE("spsc::RingBuf - Get available after a wrapping write",
           "[rb_get_available_wrapped]") {
     lockfree::spsc::RingBuf<double, 1024U> rb;
     const double test_data[360] = {123.123123};
@@ -86,7 +91,7 @@ TEST_CASE("Get available after a wrapping write",
     REQUIRE(rb.GetAvailable() == sizeof(test_data2) / sizeof(test_data2[0]));
 }
 
-TEST_CASE("Skip from the beginning", "[rb_skip]") {
+TEST_CASE("spsc::RingBuf - Skip from the beginning", "[rb_skip]") {
     lockfree::spsc::RingBuf<int32_t, 100U> rb;
     const int32_t test_data[60] = {-125};
 
@@ -97,7 +102,7 @@ TEST_CASE("Skip from the beginning", "[rb_skip]") {
     REQUIRE(rb.GetFree() == 100U - 1U);
 }
 
-TEST_CASE("Skip after wrapping", "[rb_skip_wrapping]") {
+TEST_CASE("spsc::RingBuf - Skip after wrapping", "[rb_skip_wrapping]") {
     lockfree::spsc::RingBuf<int32_t, 100U> rb;
     const int32_t test_data[60] = {-125};
 
@@ -111,7 +116,8 @@ TEST_CASE("Skip after wrapping", "[rb_skip_wrapping]") {
     REQUIRE(rb.GetFree() == 100U - 1U);
 }
 
-TEST_CASE("Try to skip with an empty buffer", "[rb_skip_empty]") {
+TEST_CASE("spsc::RingBuf - Try to skip with an empty buffer",
+          "[rb_skip_empty]") {
     lockfree::spsc::RingBuf<int32_t, 100U> rb;
 
     bool const skip_success = rb.Skip(1);
@@ -119,7 +125,7 @@ TEST_CASE("Try to skip with an empty buffer", "[rb_skip_empty]") {
     REQUIRE(!skip_success);
 }
 
-TEST_CASE("Write to the beginning", "[rb_write_beginning]") {
+TEST_CASE("spsc::RingBuf - Write to the beginning", "[rb_write_beginning]") {
     lockfree::spsc::RingBuf<uint8_t, 512U> rb;
     const uint8_t test_data[320] = {0xE5U};
 
@@ -128,7 +134,7 @@ TEST_CASE("Write to the beginning", "[rb_write_beginning]") {
     REQUIRE(write_success);
 }
 
-TEST_CASE("Write with wrapping", "[rb_write_wrapping]") {
+TEST_CASE("spsc::RingBuf - Write with wrapping", "[rb_write_wrapping]") {
     lockfree::spsc::RingBuf<uint8_t, 512U> rb;
     const uint8_t test_data[320] = {0xE5U};
 
@@ -141,7 +147,8 @@ TEST_CASE("Write with wrapping", "[rb_write_wrapping]") {
     REQUIRE(write_success);
 }
 
-TEST_CASE("Write when there is not enough space", "[rb_write_no_space]") {
+TEST_CASE("spsc::RingBuf - Write when there is not enough space",
+          "[rb_write_no_space]") {
     lockfree::spsc::RingBuf<uint8_t, 512U> rb;
     const uint8_t test_data[320] = {0xE5U};
 
@@ -152,7 +159,7 @@ TEST_CASE("Write when there is not enough space", "[rb_write_no_space]") {
     REQUIRE(!write_success);
 }
 
-TEST_CASE("Write full capacity", "[rb_write_max_size]") {
+TEST_CASE("spsc::RingBuf - Write full capacity", "[rb_write_max_size]") {
     lockfree::spsc::RingBuf<uint8_t, 512U> rb;
     const uint8_t test_data[511] = {0xE5U};
 
@@ -161,7 +168,7 @@ TEST_CASE("Write full capacity", "[rb_write_max_size]") {
     REQUIRE(write_success);
 }
 
-TEST_CASE("Write std::array", "[rb_write_std_array]") {
+TEST_CASE("spsc::RingBuf - Write std::array", "[rb_write_std_array]") {
     lockfree::spsc::RingBuf<uint8_t, 512U> rb;
     const std::array<uint8_t, 320> test_data = {0xE5U};
 
@@ -169,7 +176,7 @@ TEST_CASE("Write std::array", "[rb_write_std_array]") {
     REQUIRE(write_success);
 }
 
-TEST_CASE("Write std::span", "[rb_write_span]") {
+TEST_CASE("spsc::RingBuf - Write std::span", "[rb_write_span]") {
     lockfree::spsc::RingBuf<uint8_t, 512U> rb;
     const uint8_t test_data[320] = {0xE5U};
 
@@ -178,7 +185,7 @@ TEST_CASE("Write std::span", "[rb_write_span]") {
     REQUIRE(write_success);
 }
 
-TEST_CASE("Read from the beginning", "[rb_read_beginning]") {
+TEST_CASE("spsc::RingBuf - Read from the beginning", "[rb_read_beginning]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const uint64_t test_data[320] = {0xE5U};
 
@@ -193,7 +200,7 @@ TEST_CASE("Read from the beginning", "[rb_read_beginning]") {
                        std::begin(test_data_read)));
 }
 
-TEST_CASE("Read wrapping", "[rb_read_wrapping]") {
+TEST_CASE("spsc::RingBuf - Read wrapping", "[rb_read_wrapping]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const uint64_t test_data[320] = {0xE5U};
 
@@ -213,7 +220,8 @@ TEST_CASE("Read wrapping", "[rb_read_wrapping]") {
                        std::begin(test_data_read)));
 }
 
-TEST_CASE("Try to read from an empty buffer", "[rb_read_empty]") {
+TEST_CASE("spsc::RingBuf - Try to read from an empty buffer",
+          "[rb_read_empty]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
 
     uint64_t test_data_read[320] = {0};
@@ -223,7 +231,7 @@ TEST_CASE("Try to read from an empty buffer", "[rb_read_empty]") {
     REQUIRE(!read_success);
 }
 
-TEST_CASE("Read std::array", "[rb_read_std_array]") {
+TEST_CASE("spsc::RingBuf - Read std::array", "[rb_read_std_array]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const std::array<uint64_t, 320> test_data = {0xE5U};
 
@@ -237,7 +245,7 @@ TEST_CASE("Read std::array", "[rb_read_std_array]") {
         std::equal(test_data.begin(), test_data.end(), test_data_read.begin()));
 }
 
-TEST_CASE("Read std::span", "[rb_read_span]") {
+TEST_CASE("spsc::RingBuf - Read std::span", "[rb_read_span]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const uint64_t test_data[320] = {0xE5U};
 
@@ -251,7 +259,7 @@ TEST_CASE("Read std::span", "[rb_read_span]") {
                        std::begin(test_data_read)));
 }
 
-TEST_CASE("Peek from the beginning", "[rb_peek_beginning]") {
+TEST_CASE("spsc::RingBuf - Peek from the beginning", "[rb_peek_beginning]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const uint64_t test_data[320] = {0xE5U};
 
@@ -266,7 +274,7 @@ TEST_CASE("Peek from the beginning", "[rb_peek_beginning]") {
                        std::begin(test_data_read)));
 }
 
-TEST_CASE("Peek wrapping", "[rb_peek_wrapping]") {
+TEST_CASE("spsc::RingBuf - Peek wrapping", "[rb_peek_wrapping]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const uint64_t test_data[320] = {0xE5U};
 
@@ -286,7 +294,8 @@ TEST_CASE("Peek wrapping", "[rb_peek_wrapping]") {
                        std::begin(test_data_read)));
 }
 
-TEST_CASE("Try to peek from an empty buffer", "[rb_peek_empty]") {
+TEST_CASE("spsc::RingBuf - Try to peek from an empty buffer",
+          "[rb_peek_empty]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> const rb;
 
     uint64_t test_data_read[320] = {0};
@@ -296,7 +305,7 @@ TEST_CASE("Try to peek from an empty buffer", "[rb_peek_empty]") {
     REQUIRE(!peek_success);
 }
 
-TEST_CASE("Peek std::array", "[rb_peek_std_array]") {
+TEST_CASE("spsc::RingBuf - Peek std::array", "[rb_peek_std_array]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const std::array<uint64_t, 320> test_data = {0xE5U};
 
@@ -310,7 +319,7 @@ TEST_CASE("Peek std::array", "[rb_peek_std_array]") {
         std::equal(test_data.begin(), test_data.end(), test_data_read.begin()));
 }
 
-TEST_CASE("Peek std::span", "[rb_peek_span]") {
+TEST_CASE("spsc::RingBuf - Peek std::span", "[rb_peek_span]") {
     lockfree::spsc::RingBuf<uint64_t, 512U> rb;
     const uint64_t test_data[320] = {0xE5U};
 
@@ -324,7 +333,7 @@ TEST_CASE("Peek std::span", "[rb_peek_span]") {
                        std::begin(test_data_read)));
 }
 
-TEST_CASE("Multithreaded read/write", "[rb_multithread]") {
+TEST_CASE("spsc::RingBuf - Multithreaded read/write", "[rb_multithread]") {
     std::vector<std::thread> threads;
     lockfree::spsc::RingBuf<uint64_t, 1024U> rb;
     std::vector<uint64_t> written;
@@ -358,7 +367,8 @@ TEST_CASE("Multithreaded read/write", "[rb_multithread]") {
         std::equal(std::begin(written), std::end(written), std::begin(read)));
 }
 
-TEST_CASE("Multithreaded read/write multiple", "[rb_multithread_multiple]") {
+TEST_CASE("spsc::RingBuf - Multithreaded read/write multiple",
+          "[rb_multithread_multiple]") {
     std::vector<std::thread> threads;
     lockfree::spsc::RingBuf<unsigned int, 1024U> rb;
     std::vector<unsigned int> written;

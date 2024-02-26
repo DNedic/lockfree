@@ -5,7 +5,7 @@
 
 #include "lockfree.hpp"
 
-TEST_CASE("Write to empty, lowest priority and read back",
+TEST_CASE("mpmc::PriorityQueue - Write to empty, lowest priority and read back",
           "[mpmc_pq_write_empty_lowest]") {
     lockfree::mpmc::PriorityQueue<int16_t, 20, 3> queue;
 
@@ -18,8 +18,9 @@ TEST_CASE("Write to empty, lowest priority and read back",
     REQUIRE(read == -1024);
 }
 
-TEST_CASE("Write to empty, highest priority and read back",
-          "[mpmc_pq_write_empty_highest]") {
+TEST_CASE(
+    "mpmc::PriorityQueue - Write to empty, highest priority and read back",
+    "[mpmc_pq_write_empty_highest]") {
     lockfree::mpmc::PriorityQueue<int16_t, 20, 3> queue;
 
     bool const push_success = queue.Push(-1024, 2);
@@ -31,7 +32,8 @@ TEST_CASE("Write to empty, highest priority and read back",
     REQUIRE(read == -1024);
 }
 
-TEST_CASE("Write multiple with different priority and read back ensuring "
+TEST_CASE("mpmc::PriorityQueue - Write multiple with different priority and "
+          "read back ensuring "
           "proper sequence",
           "[mpmc_pq_write_multiple_read_multiple]") {
     lockfree::mpmc::PriorityQueue<uint64_t, 10, 4> queue;
@@ -66,7 +68,7 @@ TEST_CASE("Write multiple with different priority and read back ensuring "
     REQUIRE(read == 1024);
 }
 
-TEST_CASE("Optional API", "[mpmc_pq_optional_api]") {
+TEST_CASE("mpmc::PriorityQueue - Optional API", "[mpmc_pq_optional_api]") {
     lockfree::mpmc::PriorityQueue<int16_t, 20, 3> queue;
 
     bool const push_success = queue.Push(-1024, 0);
