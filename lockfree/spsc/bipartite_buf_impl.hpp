@@ -77,15 +77,16 @@ T *BipartiteBuf<T, size>::WriteAcquire(const size_t free_required) {
 
 template <typename T, size_t size>
 void BipartiteBuf<T, size>::WriteRelease(const size_t written) {
-    /* Preload variables with adequate memory ordering */
     size_t w = _w.load(std::memory_order_relaxed);
-    size_t i = _i.load(std::memory_order_relaxed);
 
     /* If the write wrapped set the invalidate index and reset write index*/
+    size_t i;
     if (_write_wrapped) {
         _write_wrapped = false;
         i = w;
         w = 0U;
+    } else {
+        i = _i.load(std::memory_order_relaxed);
     }
 
     /* Increment the write index */
