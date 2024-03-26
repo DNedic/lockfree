@@ -34,7 +34,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v2.0.7
+ * Version:         v2.0.8
  **************************************************************/
 
 /************************** INCLUDE ***************************/
