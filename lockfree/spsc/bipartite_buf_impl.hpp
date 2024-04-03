@@ -48,7 +48,7 @@ namespace spsc {
 
 template <typename T, size_t size>
 BipartiteBuf<T, size>::BipartiteBuf()
-    : _r(0U), _w(0U), _i(0U), _write_wrapped(false), _read_wrapped(false) {}
+    : _write_wrapped(false), _read_wrapped(false), _r(0U), _w(0U), _i(0U) {}
 
 template <typename T, size_t size>
 T *BipartiteBuf<T, size>::WriteAcquire(const size_t free_required) {
