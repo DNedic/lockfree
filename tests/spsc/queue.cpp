@@ -6,7 +6,7 @@
 
 #include "lockfree.hpp"
 
-TEST_CASE("Write to empty and read back", "[q_write_empty]") {
+TEST_CASE("spsc::Queue - Write to empty and read back", "[q_write_empty]") {
     lockfree::spsc::Queue<int16_t, 20> queue;
 
     bool const push_success = queue.Push(-1024);
@@ -18,7 +18,7 @@ TEST_CASE("Write to empty and read back", "[q_write_empty]") {
     REQUIRE(pop_success);
 }
 
-TEST_CASE("Read empty", "[q_read_empty]") {
+TEST_CASE("spsc::Queue - Read empty", "[q_read_empty]") {
     lockfree::spsc::Queue<uint8_t, 20> queue;
 
     uint8_t read = 0;
@@ -26,7 +26,7 @@ TEST_CASE("Read empty", "[q_read_empty]") {
     REQUIRE(!pop_success);
 }
 
-TEST_CASE("Write full", "[q_write_full]") {
+TEST_CASE("spsc::Queue - Write full", "[q_write_full]") {
     lockfree::spsc::Queue<uint8_t, 5> queue;
 
     bool push_success = queue.Push(1U);
@@ -37,7 +37,8 @@ TEST_CASE("Write full", "[q_write_full]") {
     REQUIRE(!push_success);
 }
 
-TEST_CASE("Write multiple to empty and read back", "[q_write_empty_multiple]") {
+TEST_CASE("spsc::Queue - Write multiple to empty and read back",
+          "[q_write_empty_multiple]") {
     lockfree::spsc::Queue<float, 20> queue;
 
     bool push_success = queue.Push(2.7183F);
@@ -58,7 +59,7 @@ TEST_CASE("Write multiple to empty and read back", "[q_write_empty_multiple]") {
     REQUIRE(pop_success);
 }
 
-TEST_CASE("Write with overflow and read back from start",
+TEST_CASE("spsc::Queue - Write with overflow and read back from start",
           "[q_write_overflow]") {
     lockfree::spsc::Queue<int32_t, 4> queue;
 
@@ -80,7 +81,7 @@ TEST_CASE("Write with overflow and read back from start",
     REQUIRE(read == 1000);
 }
 
-TEST_CASE("Optional API", "[q_optional_api]") {
+TEST_CASE("spsc::Queue - Optional API", "[q_optional_api]") {
     lockfree::spsc::Queue<uint64_t, 20> queue;
 
     REQUIRE(!queue.PopOptional());
@@ -89,7 +90,7 @@ TEST_CASE("Optional API", "[q_optional_api]") {
     REQUIRE(queue.PopOptional() == -1024);
 }
 
-TEST_CASE("Multithreaded read/write", "[q_multithread]") {
+TEST_CASE("spsc::Queue - Multithreaded read/write", "[q_multithread]") {
     std::vector<std::thread> threads;
     lockfree::spsc::Queue<uint64_t, 1024U> queue;
     std::vector<uint64_t> written;

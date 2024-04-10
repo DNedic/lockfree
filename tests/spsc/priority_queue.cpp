@@ -6,7 +6,7 @@
 
 #include "lockfree.hpp"
 
-TEST_CASE("Write to empty, lowest priority and read back",
+TEST_CASE("spsc::PriorityQueue - Write to empty, lowest priority and read back",
           "[pq_write_empty_lowest]") {
     lockfree::spsc::PriorityQueue<int16_t, 20, 3> queue;
 
@@ -19,8 +19,9 @@ TEST_CASE("Write to empty, lowest priority and read back",
     REQUIRE(read == -1024);
 }
 
-TEST_CASE("Write to empty, highest priority and read back",
-          "[pq_write_empty_highest]") {
+TEST_CASE(
+    "spsc::PriorityQueue - Write to empty, highest priority and read back",
+    "[pq_write_empty_highest]") {
     lockfree::spsc::PriorityQueue<int16_t, 20, 3> queue;
 
     bool const push_success = queue.Push(-1024, 2);
@@ -32,7 +33,8 @@ TEST_CASE("Write to empty, highest priority and read back",
     REQUIRE(read == -1024);
 }
 
-TEST_CASE("Write multiple with different priority and read back ensuring "
+TEST_CASE("spsc::PriorityQueue - Write multiple with different priority and "
+          "read back ensuring "
           "proper sequence",
           "[pq_write_multiple_read_multiple]") {
     lockfree::spsc::PriorityQueue<uint64_t, 10, 4> queue;
@@ -67,7 +69,8 @@ TEST_CASE("Write multiple with different priority and read back ensuring "
     REQUIRE(read == 1024);
 }
 
-TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
+TEST_CASE("spsc::PriorityQueue - Multithreaded read/write",
+          "[pq_multithreaded]") {
     lockfree::spsc::PriorityQueue<uint64_t, 10, 4> queue;
     std::vector<std::thread> threads;
     std::vector<uint64_t> written;
@@ -132,14 +135,14 @@ TEST_CASE("Multithreaded read/write", "[pq_multithreaded]") {
                 found_value = true;
                 break;
             } else { // intermediate value, should be lower priority
-                REQUIRE(written_priority <= read_value);
+                REQUIRE(written_priority <= read_priority);
             }
         }
         REQUIRE(found_value);
     }
 }
 
-TEST_CASE("Optional API", "[pq_optional_api]") {
+TEST_CASE("spsc::PriorityQueue - Optional API", "[pq_optional_api]") {
     lockfree::spsc::PriorityQueue<int16_t, 20, 3> queue;
 
     bool const push_success = queue.Push(-1024, 0);

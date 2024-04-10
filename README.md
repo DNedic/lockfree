@@ -43,6 +43,9 @@ On embedded systems, ```LOCKFREE_CACHE_COHERENT``` should almost always be set a
 
 Additionally, some systems have a non-typical cacheline length (for instance the apple M1/M2 CPUs have a cacheline length of 128 bytes), and ```LOCKFREE_CACHELINE_LENGTH``` should be set accordingly in those cases.
 
+## Known limitations
+All of the data structures in `lockfree` are only meant to be used for [trivial](https://en.cppreference.com/w/cpp/language/classes#Trivial_class) types.
+
 ## FAQ
 ### Why would I use this over locking data structures on a hosted machine?
 
@@ -52,7 +55,7 @@ Additionally, `lockfree` provides a way to build applications and libraries that
 
 ### Why use this over RTOS-provided IPC mechanisms on an embedded system?
 
-While locking usually isn't expensive on embedded systems such as microcontrollers, there is a wide variety of RTOS-es and no standardized API for locking. The fact that multiple architectures are present from 8051 to RISC-V means that architecture-specific locking methods are not standardized either.
+While locking usually isn't expensive on embedded systems such as microcontrollers, there is a wide variety of RTOS-es and no standardized API for locking. The fact that multiple architectures are present from 8051 to RISC-V means that interrupt management methods are not standardized either.
 
 `lockfree` provides a way to build portable embedded code with a negligible performance cost as opposed to locking, code using `lockfree` can be compiled to run on any embedded platform supporting C++11. Additionally, the code can easily be tested on a host machine without the need for mocking.
 

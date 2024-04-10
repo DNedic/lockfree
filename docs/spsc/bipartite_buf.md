@@ -7,8 +7,6 @@ A bipartite buffer should be used everywhere the Ring Buffer is used if you want
 * To process data inside the buffer without dequeueing it
 * When operations on data can fail or only some of the data is used
 
-> Note: At the moment, the Bipartite Buffer is only meant to be used for [trivial](https://en.cppreference.com/w/cpp/language/classes#Trivial_class) types.
-
 ## How to use
 Shown here is an example of typical use:
 * Initialization

@@ -4,7 +4,8 @@
 
 #include "lockfree.hpp"
 
-TEST_CASE("Write to the beginning", "[bb_write_beginning]") {
+TEST_CASE("spsc::BipartiteBuf - Write to the beginning",
+          "[bb_write_beginning]") {
     lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
     const uint8_t test_data[320] = {0xE5U};
 
@@ -23,13 +24,15 @@ TEST_CASE("Write to the beginning", "[bb_write_beginning]") {
     REQUIRE(std::equal(std::begin(test_data), std::end(test_data), read.first));
 }
 
-TEST_CASE("Try to acquire too much data", "[bb_acquire_too_much]") {
+TEST_CASE("spsc::BipartiteBuf - Try to acquire too much data",
+          "[bb_acquire_too_much]") {
     lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
     auto *write_location = bb.WriteAcquire(512U + rand());
     REQUIRE(write_location == nullptr);
 }
 
-TEST_CASE("Try to acquire read with an empty buffer", "[bb_read_empty]") {
+TEST_CASE("spsc::BipartiteBuf - Try to acquire read with an empty buffer",
+          "[bb_read_empty]") {
     lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
 
     auto read = bb.ReadAcquire();
@@ -37,7 +40,8 @@ TEST_CASE("Try to acquire read with an empty buffer", "[bb_read_empty]") {
     REQUIRE(read.second == 0);
 }
 
-TEST_CASE("Write with overflow condition", "[bb_write_overflow]") {
+TEST_CASE("spsc::BipartiteBuf - Write with overflow condition",
+          "[bb_write_overflow]") {
     lockfree::spsc::BipartiteBuf<uint32_t, 512U> bb;
     const uint32_t test_data[320] = {0xE5A1D2C3U};
 
@@ -66,8 +70,9 @@ TEST_CASE("Write with overflow condition", "[bb_write_overflow]") {
         std::equal(std::begin(test_data2), std::end(test_data2), read.first));
 }
 
-TEST_CASE("Read data written after overflow condition write",
-          "[bb_read_after_overflow_write]") {
+TEST_CASE(
+    "spsc::BipartiteBuf - Read data written after overflow condition write",
+    "[bb_read_after_overflow_write]") {
     lockfree::spsc::BipartiteBuf<int16_t, 512U> bb;
     const int16_t test_data[320] = {-222};
 
@@ -105,7 +110,7 @@ TEST_CASE("Read data written after overflow condition write",
         std::equal(std::begin(test_data3), std::end(test_data3), read.first));
 }
 
-TEST_CASE("Interleaved write and read with enough space",
+TEST_CASE("spsc::BipartiteBuf - Interleaved write and read with enough space",
           "[bb_interleaved_success]") {
     lockfree::spsc::BipartiteBuf<double, 512U> bb;
     const double test_data[320] = {42.4242};
@@ -132,7 +137,7 @@ TEST_CASE("Interleaved write and read with enough space",
     REQUIRE(std::equal(std::begin(test_data), std::end(test_data), read.first));
 }
 
-TEST_CASE("Interleaved write and read with enough space 2",
+TEST_CASE("spsc::BipartiteBuf - Interleaved write and read with enough space 2",
           "[bb_interleaved_success2]") {
     lockfree::spsc::BipartiteBuf<char, 512U> bb;
     const char test_data[320] = {'A'};
@@ -156,8 +161,9 @@ TEST_CASE("Interleaved write and read with enough space 2",
     REQUIRE(std::equal(std::begin(test_data), std::end(test_data), read.first));
 }
 
-TEST_CASE("Interleaved write and read without enough space",
-          "[bb_interleaved_fail]") {
+TEST_CASE(
+    "spsc::BipartiteBuf - Interleaved write and read without enough space",
+    "[bb_interleaved_fail]") {
     lockfree::spsc::BipartiteBuf<uint8_t, 512U> bb;
     const uint8_t test_data[320] = {0xE5U};
 
@@ -178,7 +184,8 @@ TEST_CASE("Interleaved write and read without enough space",
     REQUIRE(write_location == nullptr);
 }
 
-TEST_CASE("Test keeping the chunk of data when write ends exactly in the end "
+TEST_CASE("spsc::BipartiteBuf - Test keeping the chunk of data when write ends "
+          "exactly in the end "
           "of the buffer.",
           "[bb_exact_end_write_release_proper_invalidation_test]") {
     constexpr size_t size = 8;
@@ -199,7 +206,7 @@ TEST_CASE("Test keeping the chunk of data when write ends exactly in the end "
     REQUIRE((read_buf_second_half - base) == (write_buf_second_half - base));
 }
 
-TEST_CASE("std::span API test", "[bb_std_span_api]") {
+TEST_CASE("spsc::BipartiteBuf - std::span API test", "[bb_std_span_api]") {
     lockfree::spsc::BipartiteBuf<double, 512U> bb;
 
     auto *write_ptr = bb.WriteAcquire(320);
@@ -236,7 +243,8 @@ TEST_CASE("std::span API test", "[bb_std_span_api]") {
     REQUIRE(read_pair.first == read_span.data());
 }
 
-TEST_CASE("Multithreaded read/write multiple", "[bb_multithread_multiple]") {
+TEST_CASE("spsc::BipartiteBuf - Multithreaded read/write multiple",
+          "[bb_multithread_multiple]") {
     std::vector<std::thread> threads;
     lockfree::spsc::BipartiteBuf<unsigned int, 1024U> bb;
     std::vector<unsigned int> written;
