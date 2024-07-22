@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.9
+- Fixed the initialization order in the [Bipartite Buffer](docs/spsc/bipartite_buf.md) constructor
+- Fixed missing include for the `std::pair` use in the [Bipartite Buffer](docs/spsc/bipartite_buf.md)
+
 ## 2.0.8
 - Added a performance optimization in the [Bipartite Buffer](docs/spsc/bipartite_buf.md), where the atomic invalidate index load can be avoided after writing wraps
 
