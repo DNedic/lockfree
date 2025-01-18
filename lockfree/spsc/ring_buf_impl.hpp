@@ -37,6 +37,8 @@
  * Version:         v2.0.9
  **************************************************************/
 
+#include <cstring>
+
 namespace lockfree {
 namespace spsc {
 /********************** PUBLIC METHODS ************************/
