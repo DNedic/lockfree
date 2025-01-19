@@ -7,7 +7,7 @@
  **************************************************************/
 
 /**************************************************************
- * Copyright (c) 2023 Djordje Nedic
+ * Copyright (c) 2023-2025 Djordje Nedic
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated
@@ -34,7 +34,7 @@
  * This file is part of lockfree
  *
  * Author:          Djordje Nedic <nedic.djordje2@gmail.com>
- * Version:         v2.0.9
+ * Version:         v2.0.10
  **************************************************************/
 
 /************************** INCLUDE ***************************/
