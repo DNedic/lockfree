@@ -22,6 +22,13 @@ if (DEFINED LOCKFREE_CACHELINE_LENGTH)
     )
 endif()
 
+if (DEFINED LOCKFREE_RING_BUFFER_ZERO_BASED)
+    target_compile_definitions(${PROJECT_NAME}
+    INTERFACE
+        LOCKFREE_RING_BUFFER_ZERO_BASED=${LOCKFREE_RING_BUFFER_ZERO_BASED}
+    )
+endif()
+
 # Only build tests if we're actually working on the library,
 # not when the library is being used in a project
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)

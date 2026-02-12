@@ -50,8 +50,8 @@
 #include <span>
 #endif
 
-#ifndef ZERO_BASED_BUFFER
-#define ZERO_BASED_BUFFER false
+#ifndef LOCKFREE_RING_BUFFER_ZERO_BASED
+#define LOCKFREE_RING_BUFFER_ZERO_BASED false
 #endif
 
 namespace lockfree {
@@ -60,7 +60,7 @@ namespace spsc {
 
 template <typename T, size_t size> class RingBuf {
     static_assert(std::is_trivial<T>::value, "The type T must be trivial");
-    #if ZERO_BASED_BUFFER
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
     static_assert(size > 1, "Buffer size must be bigger than 1");
     #else
     static_assert(size > 2, "Buffer size must be bigger than 2");
@@ -190,14 +190,14 @@ template <typename T, size_t size> class RingBuf {
     static size_t CalcFree(
       const size_t w
     , const size_t r
-    #if ZERO_BASED_BUFFER
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
     , const size_t f
     #endif
     );
     static size_t CalcAvailable(
       const size_t w
     , const size_t r
-    #if ZERO_BASED_BUFFER
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
     , const size_t f
     #endif
     );
@@ -208,13 +208,13 @@ template <typename T, size_t size> class RingBuf {
 #if LOCKFREE_CACHE_COHERENT
     alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _r; /**< Read index */
     alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _w; /**< Write index */
-    #if ZERO_BASED_BUFFER
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
     alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _f; /**< Write index */
     #endif
 #else
     std::atomic_size_t _r; /**< Read index */
     std::atomic_size_t _w; /**< Write index */
-    #if ZERO_BASED_BUFFER
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
     std::atomic_size_t _f; /**< Full boolean */
     #endif
 #endif
