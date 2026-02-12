@@ -54,3 +54,10 @@ dkms.conf
 # Directories
 build/
 .vscode/
+_deps/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+# CMake files, add -f if needed
+*.cmake
