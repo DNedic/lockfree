@@ -9,7 +9,11 @@ TEST_CASE("spsc::RingBuf - Get free with an empty buffer",
     lockfree::spsc::RingBuf<float, 1024U> const rb;
     const float test_data[120] = {2.71828F};
 
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
+    REQUIRE(rb.GetFree() == 1024U);
+    #else
     REQUIRE(rb.GetFree() == 1024U - 1U);
+    #endif
 }
 
 TEST_CASE("spsc::RingBuf - Get free after a write", "[rb_get_free]") {
@@ -18,14 +22,24 @@ TEST_CASE("spsc::RingBuf - Get free after a write", "[rb_get_free]") {
 
     rb.Write(test_data, sizeof(test_data) / sizeof(test_data[0]));
 
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
+    REQUIRE(rb.GetFree() ==
+            1024U - sizeof(test_data) / sizeof(test_data[0]));
+    #else
     REQUIRE(rb.GetFree() ==
             1024U - 1U - sizeof(test_data) / sizeof(test_data[0]));
+    #endif
 }
 
 TEST_CASE("spsc::RingBuf - Get free when the buffer is full",
           "[rb_get_free_full]") {
     lockfree::spsc::RingBuf<float, 1024U> rb;
+
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
+    const float test_data[1024] = {2.71828F};
+    #else
     const float test_data[1023] = {2.71828F};
+    #endif
 
     rb.Write(test_data, sizeof(test_data) / sizeof(test_data[0]));
 
@@ -44,9 +58,15 @@ TEST_CASE("spsc::RingBuf - Get free after a wrapping write",
     const float test_data2[900] = {3.1416F};
     rb.Write(test_data2, sizeof(test_data2) / sizeof(test_data2[0]));
 
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
+    /* After a wrapping write */
+    REQUIRE(rb.GetFree() ==
+            1024U - sizeof(test_data2) / sizeof(test_data2[0]));
+    #else
     /* After a wrapping write */
     REQUIRE(rb.GetFree() ==
             1024U - 1U - sizeof(test_data2) / sizeof(test_data2[0]));
+    #endif
 }
 
 TEST_CASE("spsc::RingBuf - Get available with an empty buffer",
@@ -99,7 +119,11 @@ TEST_CASE("spsc::RingBuf - Skip from the beginning", "[rb_skip]") {
     bool const skip_success = rb.Skip(sizeof(test_data) / sizeof(test_data[0]));
 
     REQUIRE(skip_success);
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
+    REQUIRE(rb.GetFree() == 100U);
+    #else
     REQUIRE(rb.GetFree() == 100U - 1U);
+    #endif
 }
 
 TEST_CASE("spsc::RingBuf - Skip after wrapping", "[rb_skip_wrapping]") {
@@ -113,7 +137,11 @@ TEST_CASE("spsc::RingBuf - Skip after wrapping", "[rb_skip_wrapping]") {
     bool const skip_success = rb.Skip(sizeof(test_data) / sizeof(test_data[0]));
 
     REQUIRE(skip_success);
+    #if LOCKFREE_RING_BUFFER_ZERO_BASED
+    REQUIRE(rb.GetFree() == 100U);
+    #else
     REQUIRE(rb.GetFree() == 100U - 1U);
+    #endif
 }
 
 TEST_CASE("spsc::RingBuf - Try to skip with an empty buffer",
