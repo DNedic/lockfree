@@ -44,15 +44,33 @@ namespace spsc {
 /********************** PUBLIC METHODS ************************/
 
 template <typename T, size_t size>
-RingBuf<T, size>::RingBuf() : _r(0U), _w(0U) {}
+RingBuf<T, size>::RingBuf()
+: _r(0U)
+, _w(0U)
+#if ZERO_BASED_BUFFER
+, _f(0U)
+#endif
+{}
 
 template <typename T, size_t size>
 bool RingBuf<T, size>::Write(const T *data, const size_t cnt) {
     /* Preload variables with adequate memory ordering */
     size_t w = _w.load(std::memory_order_relaxed);
     const size_t r = _r.load(std::memory_order_acquire);
+    
+    #if ZERO_BASED_BUFFER
+    size_t f = _f.load(std::memory_order_relaxed);
+    #endif
 
-    if (CalcFree(w, r) < cnt) {
+    size_t const free = CalcFree(
+      w
+    , r
+    #if ZERO_BASED_BUFFER
+    , f
+    #endif
+    );
+
+    if (free < cnt) {
         return false;
     }
 
@@ -79,6 +97,12 @@ bool RingBuf<T, size>::Write(const T *data, const size_t cnt) {
     /* Store the write index with adequate ordering */
     _w.store(w, std::memory_order_release);
 
+    #if ZERO_BASED_BUFFER
+    if (w == r) {
+        _f.store(1, std::memory_order_release);
+    }
+    #endif
+
     return true;
 }
 
@@ -88,7 +112,19 @@ bool RingBuf<T, size>::Read(T *data, const size_t cnt) {
     size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);
 
-    if (CalcAvailable(w, r) < cnt) {
+    #if ZERO_BASED_BUFFER
+    size_t f = _f.load(std::memory_order_relaxed);
+    #endif
+
+    auto const availabe = CalcAvailable(
+      w
+    , r
+    #if ZERO_BASED_BUFFER
+    , f
+    #endif
+    );
+
+    if (availabe < cnt) {
         return false;
     }
 
@@ -115,6 +151,10 @@ bool RingBuf<T, size>::Read(T *data, const size_t cnt) {
     /* Store the write index with adequate ordering */
     _r.store(r, std::memory_order_release);
 
+    #if ZERO_BASED_BUFFER
+    _f.store(0, std::memory_order_release);
+    #endif
+
     return true;
 }
 
@@ -124,7 +164,19 @@ bool RingBuf<T, size>::Peek(T *data, const size_t cnt) const {
     const size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);
 
-    if (CalcAvailable(w, r) < cnt) {
+    #if ZERO_BASED_BUFFER
+    const size_t f = _f.load(std::memory_order_relaxed);
+    #endif
+
+    auto const availabe = CalcAvailable(
+      w
+    , r
+    #if ZERO_BASED_BUFFER
+    , f
+    #endif
+    );
+
+    if (availabe < cnt) {
         return false;
     }
 
@@ -150,7 +202,19 @@ bool RingBuf<T, size>::Skip(const size_t cnt) {
     size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);
 
-    if (CalcAvailable(w, r) < cnt) {
+    #if ZERO_BASED_BUFFER
+    size_t f = _f.load(std::memory_order_relaxed);
+    #endif
+
+    auto const availabe = CalcAvailable(
+        w
+        , r
+        #if ZERO_BASED_BUFFER
+        , f
+        #endif
+    );
+
+    if (availabe < cnt) {
         return false;
     }
 
@@ -162,6 +226,9 @@ bool RingBuf<T, size>::Skip(const size_t cnt) {
 
     /* Store the write index with adequate ordering */
     _r.store(r, std::memory_order_release);
+    #if ZERO_BASED_BUFFER
+    _f.store(0, std::memory_order_release);
+    #endif
 
     return true;
 }
@@ -170,7 +237,17 @@ template <typename T, size_t size> size_t RingBuf<T, size>::GetFree() const {
     const size_t w = _w.load(std::memory_order_relaxed);
     const size_t r = _r.load(std::memory_order_acquire);
 
-    return CalcFree(w, r);
+    #if ZERO_BASED_BUFFER
+    const size_t f = _f.load(std::memory_order_relaxed);
+    #endif
+
+    return CalcFree(
+      w
+    , r
+    #if ZERO_BASED_BUFFER
+    , f
+    #endif
+    );
 }
 
 template <typename T, size_t size>
@@ -178,7 +255,17 @@ size_t RingBuf<T, size>::GetAvailable() const {
     const size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);
 
-    return CalcAvailable(w, r);
+    #if ZERO_BASED_BUFFER
+    const size_t f = _f.load(std::memory_order_relaxed);
+    #endif
+
+    return CalcAvailable(
+      w
+    , r
+    #if ZERO_BASED_BUFFER
+    , f
+    #endif
+    );
 }
 
 /********************** std::array API ************************/
@@ -222,16 +309,42 @@ bool RingBuf<T, size>::Peek(std::span<T> data) const {
 /********************* PRIVATE METHODS ************************/
 
 template <typename T, size_t size>
-size_t RingBuf<T, size>::CalcFree(const size_t w, const size_t r) {
+size_t RingBuf<T, size>::CalcFree(
+  const size_t w
+, const size_t r
+#if ZERO_BASED_BUFFER
+, const size_t f
+#endif
+) {
+
+    #if ZERO_BASED_BUFFER
+    if ( f != 0 ) {
+        return 0;
+    }
+    #endif
+
     if (r > w) {
-        return (r - w) - 1U;
+        return (r - w);
     } else {
-        return (size - (w - r)) - 1U;
+        return (size - (w - r));
     }
 }
 
 template <typename T, size_t size>
-size_t RingBuf<T, size>::CalcAvailable(const size_t w, const size_t r) {
+size_t RingBuf<T, size>::CalcAvailable(
+  const size_t w
+, const size_t r
+#if ZERO_BASED_BUFFER
+, const size_t f
+#endif
+) {
+
+    #if ZERO_BASED_BUFFER
+    if ( f != 0 ) {
+        return size;
+    }
+    #endif
+
     if (w >= r) {
         return w - r;
     } else {
