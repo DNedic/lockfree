@@ -318,16 +318,26 @@ size_t RingBuf<T, size>::CalcFree(
 ) {
 
     #if LOCKFREE_RING_BUFFER_ZERO_BASED
+
     if ( f != 0 ) {
         return 0;
     }
-    #endif
 
     if (r > w) {
         return (r - w);
     } else {
         return (size - (w - r));
     }
+
+    #else
+
+    if (r > w) {
+        return (r - w) - 1U;
+    } else {
+        return (size - (w - r)) - 1U;
+    }
+
+    #endif
 }
 
 template <typename T, size_t size>
