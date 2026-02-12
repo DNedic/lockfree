@@ -23,10 +23,7 @@ if (DEFINED LOCKFREE_CACHELINE_LENGTH)
 endif()
 
 if (DEFINED LOCKFREE_RING_BUFFER_ZERO_BASED)
-    target_compile_definitions(${PROJECT_NAME}
-    INTERFACE
-        LOCKFREE_RING_BUFFER_ZERO_BASED=${LOCKFREE_RING_BUFFER_ZERO_BASED}
-    )
+    target_compile_definitions(${PROJECT_NAME} INTERFACE LOCKFREE_RING_BUFFER_ZERO_BASED)
 endif()
 
 # Only build tests if we're actually working on the library,

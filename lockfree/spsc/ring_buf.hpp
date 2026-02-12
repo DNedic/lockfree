@@ -50,10 +50,6 @@
 #include <span>
 #endif
 
-#ifndef LOCKFREE_RING_BUFFER_ZERO_BASED
-#define LOCKFREE_RING_BUFFER_ZERO_BASED false
-#endif
-
 namespace lockfree {
 namespace spsc {
 /*************************** TYPES ****************************/
