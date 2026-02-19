@@ -54,7 +54,7 @@ template <typename T, size_t size> bool Queue<T, size>::Push(const T &element) {
         const size_t pop_count =
             _data[index].pop_count.load(std::memory_order_relaxed);
 
-        if (push_count > pop_count) {
+        if (push_count != pop_count) {
             return false;
         }
 
