@@ -86,10 +86,18 @@ template <typename T, size_t size> class Queue {
   private:
     struct Slot {
         T val;
-        std::atomic_size_t pop_count;
-        std::atomic_size_t push_count;
+        /**
+         * Counts all pushes and pops performed on this slot.
+         * Parity encodes the current state, while the value encodes the
+         * revolution:
+         * Even (2*R) - equal pushes and pops (R each) - EMPTY,
+         * ready for the R-th push.
+         * Odd  (2*R+1) - one more push than pop - FULL, ready for the
+         * R-th pop.
+         */
+        std::atomic_size_t access_count;
 
-        Slot() : pop_count(0U), push_count(0U) {}
+        Slot() : access_count(0U) {}
     };
 
     /********************** PRIVATE MEMBERS ***********************/
