@@ -55,6 +55,7 @@ namespace mpmc {
 template <typename T, size_t size> class Queue {
     static_assert(std::is_trivial<T>::value, "The type T must be trivial");
     static_assert(size > 2, "Buffer size must be bigger than 2");
+    static_assert((size & (size - 1)) == 0, "Buffer size must be a power of 2");
 
     /********************** PUBLIC METHODS ************************/
   public:
@@ -86,14 +87,26 @@ template <typename T, size_t size> class Queue {
   private:
     struct Slot {
         T val;
-        std::atomic_size_t pop_count;
-        std::atomic_size_t push_count;
+        /**
+         * Counts all pushes and pops performed on this slot.
+         * Parity encodes the current state, while the value encodes the
+         * revolution:
+         * Even (2*R) - equal pushes and pops (R each) - EMPTY,
+         * ready for the R-th push.
+         * Odd  (2*R+1) - one more push than pop - FULL, ready for the
+         * R-th pop.
+         */
+        std::atomic_size_t access_count;
 
-        Slot() : pop_count(0U), push_count(0U) {}
+        Slot() : access_count(0U) {}
     };
 
     /********************** PRIVATE MEMBERS ***********************/
   private:
+    /* Clips access_count / 2 to the same range as revolution_count,
+     * keeping the our_turn check correct through counter wrap-around. */
+    static constexpr size_t _revolution_mask = ~size_t(0) / size;
+
     Slot _data[size]; /**< Data array */
 #if LOCKFREE_CACHE_COHERENT
     alignas(LOCKFREE_CACHELINE_LENGTH)
