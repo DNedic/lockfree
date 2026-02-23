@@ -30,7 +30,7 @@ if (read_success) {
 
 There is also a `std::optional` API for `Pop`:
 ```c
-auto read = queue_events.PopOptional();
+auto read = queue_events.Pop();
 
 if (read) {
     actor2.ProcessEvent(read);

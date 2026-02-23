@@ -83,7 +83,7 @@ template <typename T, size_t size> class Queue {
      * Should only be called from the consumer thread.
      * @retval Either the element or nothing
      */
-    std::optional<T> PopOptional();
+    std::optional<T> Pop();
 #endif
 
     /********************** PRIVATE MEMBERS ***********************/

@@ -148,6 +148,6 @@ TEST_CASE("spsc::PriorityQueue - Optional API", "[pq_optional_api]") {
     bool const push_success = queue.Push(-1024, 0);
     REQUIRE(push_success);
 
-    auto const read = queue.PopOptional();
+    auto const read = queue.Pop();
     REQUIRE(read == -1024);
 }
