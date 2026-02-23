@@ -85,7 +85,11 @@ template <typename T, size_t size> class Queue {
 
     /*********************** PRIVATE TYPES ************************/
   private:
+#if LOCKFREE_CACHE_COHERENT
+    struct alignas(LOCKFREE_CACHELINE_LENGTH) Slot {
+#else
     struct Slot {
+#endif
         T val;
         /**
          * Counts all pushes and pops performed on this slot.
