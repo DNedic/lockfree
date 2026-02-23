@@ -66,7 +66,8 @@ T *BipartiteBuf<T, size>::WriteAcquire(const size_t free_required) {
     }
 
     /* If that doesn't work try from the beginning of the buffer */
-    if (free_required <= free - linear_free) {
+    const size_t free_from_start = free - linear_free;
+    if (free_required <= free_from_start) {
         _write_wrapped = true;
         return &_data[0];
     }
