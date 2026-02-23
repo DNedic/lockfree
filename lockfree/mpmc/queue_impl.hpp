@@ -58,7 +58,8 @@ template <typename T, size_t size> bool Queue<T, size>::Push(const T &element) {
         }
 
         const size_t revolution_count = w_count / size;
-        const bool our_turn = access_count / 2 == revolution_count;
+        const size_t slot_revolution = (access_count / 2) & _revolution_mask;
+        const bool our_turn = slot_revolution == revolution_count;
 
         if (our_turn) {
             /* Try to acquire the slot by bumping the monotonic write counter */
@@ -91,7 +92,8 @@ template <typename T, size_t size> bool Queue<T, size>::Pop(T &element) {
         }
 
         const size_t revolution_count = r_count / size;
-        const bool our_turn = access_count / 2 == revolution_count;
+        const size_t slot_revolution = (access_count / 2) & _revolution_mask;
+        const bool our_turn = slot_revolution == revolution_count;
 
         if (our_turn) {
             /* Try to acquire the slot by bumping the monotonic read counter. */

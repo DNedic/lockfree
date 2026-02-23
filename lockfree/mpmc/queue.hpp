@@ -55,6 +55,7 @@ namespace mpmc {
 template <typename T, size_t size> class Queue {
     static_assert(std::is_trivial<T>::value, "The type T must be trivial");
     static_assert(size > 2, "Buffer size must be bigger than 2");
+    static_assert((size & (size - 1)) == 0, "Buffer size must be a power of 2");
 
     /********************** PUBLIC METHODS ************************/
   public:
@@ -102,6 +103,10 @@ template <typename T, size_t size> class Queue {
 
     /********************** PRIVATE MEMBERS ***********************/
   private:
+    /* Clips access_count / 2 to the same range as revolution_count,
+     * keeping the our_turn check correct through counter wrap-around. */
+    static constexpr size_t _revolution_mask = ~size_t(0) / size;
+
     Slot _data[size]; /**< Data array */
 #if LOCKFREE_CACHE_COHERENT
     alignas(LOCKFREE_CACHELINE_LENGTH)
