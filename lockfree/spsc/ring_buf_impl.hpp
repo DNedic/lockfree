@@ -186,19 +186,19 @@ size_t RingBuf<T, size>::GetAvailable() const {
 template <typename T, size_t size>
 template <size_t arr_size>
 bool RingBuf<T, size>::Write(const std::array<T, arr_size> &data) {
-    return Write(data.begin(), arr_size);
+    return Write(data.data(), arr_size);
 }
 
 template <typename T, size_t size>
 template <size_t arr_size>
 bool RingBuf<T, size>::Read(std::array<T, arr_size> &data) {
-    return Read(data.begin(), arr_size);
+    return Read(data.data(), arr_size);
 }
 
 template <typename T, size_t size>
 template <size_t arr_size>
 bool RingBuf<T, size>::Peek(std::array<T, arr_size> &data) const {
-    return Peek(data.begin(), arr_size);
+    return Peek(data.data(), arr_size);
 }
 
 /********************** std::span API *************************/
