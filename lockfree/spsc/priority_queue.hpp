@@ -58,6 +58,7 @@ namespace spsc {
 template <typename T, size_t size, size_t priority_count> class PriorityQueue {
     static_assert(std::is_trivial<T>::value, "The type T must be trivial");
     static_assert(size > 2, "Buffer size must be bigger than 2");
+    static_assert(priority_count > 1, "Priority count must be greater than 1");
 
     /********************** PUBLIC METHODS ************************/
   public:
