@@ -30,7 +30,7 @@ if (read_success) {
 
 There is also a `std::optional` API for the `Pop` method:
 ```c
-auto job = queue_jobs.PopOptional();
+auto job = queue_jobs.Pop();
 
 if (job) {
     worker.ProcessJob(read);

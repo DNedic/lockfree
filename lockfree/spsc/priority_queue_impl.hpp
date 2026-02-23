@@ -69,7 +69,7 @@ bool PriorityQueue<T, size, priority_count>::Pop(T &element) {
 /********************* std::optional API **********************/
 #if __cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L)
 template <typename T, size_t size, size_t priority_count>
-std::optional<T> PriorityQueue<T, size, priority_count>::PopOptional() {
+std::optional<T> PriorityQueue<T, size, priority_count>::Pop() {
     T element;
     bool result = Pop(element);
 

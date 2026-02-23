@@ -83,7 +83,7 @@ template <typename T, size_t size, size_t priority_count> class PriorityQueue {
      * Should only be called from the consumer thread.
      * @retval Either the element or nothing if the queue is empty.
      */
-    std::optional<T> PopOptional();
+    std::optional<T> Pop();
 #endif
 
     /********************** PRIVATE MEMBERS ***********************/

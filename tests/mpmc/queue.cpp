@@ -84,8 +84,8 @@ TEST_CASE("mpmc::Queue - Write with overflow and read back from start",
 TEST_CASE("mpmc::Queue - Optional API", "[mpmc_q_optional_api]") {
     lockfree::mpmc::Queue<uint64_t, 32> queue;
 
-    REQUIRE(!queue.PopOptional());
+    REQUIRE(!queue.Pop());
     queue.Push(-1024);
 
-    REQUIRE(queue.PopOptional() == -1024);
+    REQUIRE(queue.Pop() == -1024);
 }

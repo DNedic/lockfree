@@ -80,7 +80,7 @@ template <typename T, size_t size> class Queue {
      * @brief Removes an element from the queue.
      * @retval Either the element or nothing
      */
-    std::optional<T> PopOptional();
+    std::optional<T> Pop();
 #endif
 
     /*********************** PRIVATE TYPES ************************/

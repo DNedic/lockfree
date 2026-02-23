@@ -84,10 +84,10 @@ TEST_CASE("spsc::Queue - Write with overflow and read back from start",
 TEST_CASE("spsc::Queue - Optional API", "[q_optional_api]") {
     lockfree::spsc::Queue<uint64_t, 20> queue;
 
-    REQUIRE(!queue.PopOptional());
+    REQUIRE(!queue.Pop());
     queue.Push(-1024);
 
-    REQUIRE(queue.PopOptional() == -1024);
+    REQUIRE(queue.Pop() == -1024);
 }
 
 TEST_CASE("spsc::Queue - Multithreaded read/write", "[q_multithread]") {
