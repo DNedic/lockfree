@@ -67,6 +67,13 @@ template <typename T, size_t size> class RingBuf {
   public:
     RingBuf();
 
+
+    /**
+     * @brief Clears the ring buffer.
+     */
+    void Clear();
+
+
     /**
      * @brief Writes data to the ring buffer.
      * Should only be called from the producer thread.
