@@ -12,9 +12,9 @@ add_subdirectory(${PROJECT_NAME})
 
 # Library configuration
 option(LOCKFREE_CACHE_COHERENT
-    "Pad data structures to cacheline boundaries to eliminate false sharing" ON)
+    "Pad data structures to eliminate false sharing" ON)
 set(LOCKFREE_CACHELINE_LENGTH 64 CACHE STRING
-    "Cacheline length in bytes used for alignment when LOCKFREE_CACHE_COHERENT is on")
+    "Cacheline length in bytes used for padding when LOCKFREE_CACHE_COHERENT is on")
 target_compile_definitions(${PROJECT_NAME}
 INTERFACE
     LOCKFREE_CACHE_COHERENT=$<BOOL:${LOCKFREE_CACHE_COHERENT}>

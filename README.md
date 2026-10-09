@@ -37,7 +37,7 @@ There are three main ways to get the library:
 * By downloading a release from GitHub
 
 ## Configuration
-`lockfree` uses cacheline alignment for indexes to avoid the [False Sharing](https://en.wikipedia.org/wiki/False_sharing) phenomenon by default, avoiding the performance loss of cacheline invalidation  on cache coherent systems.  This aligns the indexes to ```LOCKFREE_CACHELINE_LENGTH```, ```64``` by default.
+`lockfree` uses additional padding to eliminate the [False Sharing](https://en.wikipedia.org/wiki/False_sharing) phenomenon by default. The cacheline length is configured with ```LOCKFREE_CACHELINE_LENGTH```, ```64``` by default.
 
 On embedded systems, ```LOCKFREE_CACHE_COHERENT``` should almost always be set as ```false``` to avoid wasting memory.
 

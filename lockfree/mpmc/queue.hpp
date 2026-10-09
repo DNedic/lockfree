@@ -90,11 +90,7 @@ template <typename T, size_t size> class Queue {
 
     /*********************** PRIVATE TYPES ************************/
   private:
-#if LOCKFREE_CACHE_COHERENT
-    struct alignas(LOCKFREE_CACHELINE_LENGTH) Slot {
-#else
     struct Slot {
-#endif
         T val;
         /**
          * Counts all pushes and pops performed on this slot.
@@ -106,6 +102,9 @@ template <typename T, size_t size> class Queue {
          * R-th pop.
          */
         std::atomic_size_t access_count;
+#if LOCKFREE_CACHE_COHERENT
+        unsigned char padding[LOCKFREE_CACHELINE_LENGTH];
+#endif
 
         Slot() : access_count(0U) {}
     };
@@ -116,15 +115,14 @@ template <typename T, size_t size> class Queue {
      * keeping the our_turn check correct through counter wrap-around. */
     static constexpr size_t _revolution_mask = ~size_t(0) / size;
 
-    Slot _data[size]; /**< Data array */
-#if LOCKFREE_CACHE_COHERENT
-    alignas(LOCKFREE_CACHELINE_LENGTH)
-        std::atomic_size_t _r_count; /**< Read monotonic counter */
-    alignas(LOCKFREE_CACHELINE_LENGTH)
-        std::atomic_size_t _w_count; /**< Write monotonic counter */
-#else
+    Slot _data[size];            /**< Data array */
     std::atomic_size_t _r_count; /**< Read monotonic counter */
+#if LOCKFREE_CACHE_COHERENT
+    unsigned char _read_padding[LOCKFREE_CACHELINE_LENGTH];
+#endif
     std::atomic_size_t _w_count; /**< Write monotonic counter */
+#if LOCKFREE_CACHE_COHERENT
+    unsigned char _write_padding[LOCKFREE_CACHELINE_LENGTH];
 #endif
 };
 
