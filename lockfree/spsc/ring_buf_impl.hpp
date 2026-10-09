@@ -48,6 +48,10 @@ RingBuf<T, size>::RingBuf() : _r(0U), _w(0U) {}
 
 template <typename T, size_t size>
 bool RingBuf<T, size>::Write(const T *data, const size_t cnt) {
+    if (cnt == 0U) {
+        return true;
+    }
+
     /* Preload variables with adequate memory ordering */
     size_t w = _w.load(std::memory_order_relaxed);
     const size_t r = _r.load(std::memory_order_acquire);
@@ -84,6 +88,10 @@ bool RingBuf<T, size>::Write(const T *data, const size_t cnt) {
 
 template <typename T, size_t size>
 bool RingBuf<T, size>::Read(T *data, const size_t cnt) {
+    if (cnt == 0U) {
+        return true;
+    }
+
     /* Preload variables with adequate memory ordering */
     size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);
@@ -120,6 +128,10 @@ bool RingBuf<T, size>::Read(T *data, const size_t cnt) {
 
 template <typename T, size_t size>
 bool RingBuf<T, size>::Peek(T *data, const size_t cnt) const {
+    if (cnt == 0U) {
+        return true;
+    }
+
     /* Preload variables with adequate memory ordering */
     const size_t r = _r.load(std::memory_order_relaxed);
     const size_t w = _w.load(std::memory_order_acquire);

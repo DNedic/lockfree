@@ -4,6 +4,47 @@
 
 #include "lockfree.hpp"
 
+TEST_CASE("spsc::RingBuf - Zero-length operations", "[rb_zero_length]") {
+    lockfree::spsc::RingBuf<int, 8U> rb;
+    const std::array<int, 7U> test_data = {1, 2, 3, 4, 5, 6, 7};
+    size_t count = 0U;
+
+    SECTION("Empty buffer") { count = 0U; }
+    SECTION("Buffer with data") { count = 3U; }
+    SECTION("Full buffer") { count = test_data.size(); }
+    SECTION("Wrapped buffer") {
+        REQUIRE(rb.Write(test_data.data(), 6U));
+        REQUIRE(rb.Skip(6U));
+        count = test_data.size();
+    }
+
+    REQUIRE(rb.Write(test_data.data(), count));
+    const size_t free_before = rb.GetFree();
+
+    REQUIRE(rb.Write(nullptr, 0U));
+    REQUIRE(rb.Read(nullptr, 0U));
+    REQUIRE(rb.Peek(nullptr, 0U));
+
+    const std::array<int, 0U> empty_write_array = {};
+    std::array<int, 0U> empty_read_array = {};
+    REQUIRE(rb.Write(empty_write_array));
+    REQUIRE(rb.Read(empty_read_array));
+    REQUIRE(rb.Peek(empty_read_array));
+
+    REQUIRE(rb.Write(std::span<const int>{}));
+    REQUIRE(rb.Read(std::span<int>{}));
+    REQUIRE(rb.Peek(std::span<int>{}));
+
+    REQUIRE(rb.GetFree() == free_before);
+    REQUIRE(rb.GetAvailable() == count);
+
+    std::array<int, 7U> read_data = {};
+    REQUIRE(rb.Read(read_data.data(), count));
+    REQUIRE(std::equal(test_data.begin(), test_data.begin() + count,
+                       read_data.begin()));
+    REQUIRE(rb.GetAvailable() == 0U);
+}
+
 TEST_CASE("spsc::RingBuf - Get free with an empty buffer",
           "[rb_get_free_empty]") {
     lockfree::spsc::RingBuf<float, 1024U> const rb;
