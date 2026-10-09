@@ -146,12 +146,14 @@ template <typename T, size_t size> class BipartiteBuf {
   private:
     T _data[size]; /**< Data array */
 #if LOCKFREE_CACHE_COHERENT
-    alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _r; /**< Read index */
-    bool _read_wrapped; /**< Read wrapped flag, used only in the consumer */
-    alignas(
-        LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _w; /**< Write index */
+    unsigned char _data_padding[LOCKFREE_CACHELINE_LENGTH];
+    std::atomic_size_t _r; /**< Read index */
+    bool _read_wrapped;    /**< Read wrapped flag, used only in the consumer */
+    unsigned char _read_padding[LOCKFREE_CACHELINE_LENGTH];
+    std::atomic_size_t _w; /**< Write index */
     std::atomic_size_t _i; /**< Invalidated space index */
     bool _write_wrapped;   /**< Write wrapped flag, used only in the producer */
+    unsigned char _write_padding[LOCKFREE_CACHELINE_LENGTH];
 #else
     std::atomic_size_t _r; /**< Read index */
     std::atomic_size_t _w; /**< Write index */

@@ -191,12 +191,15 @@ template <typename T, size_t size> class RingBuf {
   private:
     T _data[size]; /**< Data array */
 #if LOCKFREE_CACHE_COHERENT
-    alignas(LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _r; /**< Read index */
-    alignas(
-        LOCKFREE_CACHELINE_LENGTH) std::atomic_size_t _w; /**< Write index */
-#else
+    unsigned char _data_padding[LOCKFREE_CACHELINE_LENGTH];
+#endif
     std::atomic_size_t _r; /**< Read index */
+#if LOCKFREE_CACHE_COHERENT
+    unsigned char _read_padding[LOCKFREE_CACHELINE_LENGTH];
+#endif
     std::atomic_size_t _w; /**< Write index */
+#if LOCKFREE_CACHE_COHERENT
+    unsigned char _write_padding[LOCKFREE_CACHELINE_LENGTH];
 #endif
 };
 
